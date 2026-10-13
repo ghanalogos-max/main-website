@@ -10,7 +10,7 @@ import { SearchIcon, CloseIcon, ArrowDownIcon } from "./icons";
 
 type Sort = "featured" | "az" | "popular";
 
-const PAGE_SIZE = 60;
+const PAGE_SIZE = 30;
 
 function bucket(name: string) {
   const first = name.trim()[0]?.toUpperCase() ?? "#";
