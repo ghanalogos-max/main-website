@@ -58,6 +58,27 @@ export default defineType({
       type: "url",
     }),
     defineField({
+      name: "license",
+      title: "Licence",
+      type: "string",
+      description: 'e.g. "Public domain", "CC BY-SA 4.0", "Fair use"',
+    }),
+    defineField({
+      name: "wikipediaUrl",
+      title: "Wikipedia article",
+      type: "url",
+    }),
+    defineField({
+      name: "width",
+      title: "Width (px)",
+      type: "number",
+    }),
+    defineField({
+      name: "height",
+      title: "Height (px)",
+      type: "number",
+    }),
+    defineField({
       name: "sourceNote",
       title: "Source / Brand Guideline Link",
       type: "text",

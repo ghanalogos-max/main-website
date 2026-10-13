@@ -6,7 +6,7 @@ import DevelopersPricing from "@/components/DevelopersPricing";
 import JsonLd from "@/components/JsonLd";
 import { API_PLANS, ApiPlanId } from "@/lib/apiPlans";
 import { getLogos } from "@/lib/queries";
-import { SITE_URL, faqJsonLd } from "@/lib/seo";
+import { SITE_URL, absoluteUrl, faqJsonLd } from "@/lib/seo";
 import { BookIcon, BuildingIcon, ChartIcon, FlashIcon, KeyIcon, TerminalIcon } from "@/components/icons";
 
 export const metadata: Metadata = {
@@ -92,7 +92,7 @@ export default async function DevelopersPage() {
       "format": "${sample?.format}",
       "brand_color": ${sample?.brandColor ? `"${sample.brandColor}"` : "null"},
       "files": {
-        "original": "${SITE_URL}${sample?.imageUrl}",
+        "original": "${absoluteUrl(sample?.imageUrl ?? "")}",
         "download": "${SITE_URL}/api/v1/logos/${sample?.slug}/download"
       }
     }

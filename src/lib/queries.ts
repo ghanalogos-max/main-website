@@ -26,13 +26,17 @@ const logosQuery = `*[_type == "logo"] | order(featured desc, name asc) {
   "slug": slug.current,
   "categories": categories[]->slug.current,
   "imageUrl": coalesce(svgFile.asset->url, pngFile.asset->url),
-  "format": select(defined(svgFile) => "svg", "png"),
+  "format": coalesce(svgFile.asset->extension, pngFile.asset->extension, "png"),
+  width,
+  height,
   brandColor,
   website,
   featured,
   downloadCount,
   description,
-  sourceUrl
+  sourceUrl,
+  wikipediaUrl,
+  license
 }`;
 
 const categoriesQuery = `*[_type == "category"] | order(order asc) {
@@ -42,12 +46,22 @@ const categoriesQuery = `*[_type == "category"] | order(order asc) {
   description
 }`;
 
+// Pages built from Sanity refresh at most every 5 minutes after content changes.
+const REVALIDATE = { next: { revalidate: 300 } };
+
 // An empty Sanity dataset falls back to the bundled logos so the site is never blank.
 export async function getLogos(): Promise<Logo[]> {
   if (!sanityEnabled || !sanityClient) return staticLogos;
   try {
-    const logos = await sanityClient.fetch<Logo[]>(logosQuery);
-    return logos?.length ? logos : staticLogos;
+    const logos = await sanityClient.fetch<Logo[]>(logosQuery, {}, REVALIDATE);
+    if (!logos?.length) return staticLogos;
+    return logos
+      .filter((l) => l.slug && l.imageUrl)
+      .map((l) => ({
+        ...l,
+        categories: (l.categories ?? []).filter(Boolean),
+        format: (l.format in MIME_TYPES ? l.format : "png") as LogoFormat,
+      }));
   } catch {
     return staticLogos;
   }
@@ -56,7 +70,7 @@ export async function getLogos(): Promise<Logo[]> {
 export async function getCategories(): Promise<Category[]> {
   if (!sanityEnabled || !sanityClient) return staticCategories;
   try {
-    const categories = await sanityClient.fetch<Category[]>(categoriesQuery);
+    const categories = await sanityClient.fetch<Category[]>(categoriesQuery, {}, REVALIDATE);
     return categories?.length ? categories : staticCategories;
   } catch {
     return staticCategories;
