@@ -42,10 +42,12 @@ const categoriesQuery = `*[_type == "category"] | order(order asc) {
   description
 }`;
 
+// An empty Sanity dataset falls back to the bundled logos so the site is never blank.
 export async function getLogos(): Promise<Logo[]> {
   if (!sanityEnabled || !sanityClient) return staticLogos;
   try {
-    return await sanityClient.fetch(logosQuery);
+    const logos = await sanityClient.fetch<Logo[]>(logosQuery);
+    return logos?.length ? logos : staticLogos;
   } catch {
     return staticLogos;
   }
@@ -54,7 +56,8 @@ export async function getLogos(): Promise<Logo[]> {
 export async function getCategories(): Promise<Category[]> {
   if (!sanityEnabled || !sanityClient) return staticCategories;
   try {
-    return await sanityClient.fetch(categoriesQuery);
+    const categories = await sanityClient.fetch<Category[]>(categoriesQuery);
+    return categories?.length ? categories : staticCategories;
   } catch {
     return staticCategories;
   }
