@@ -1,0 +1,1212 @@
+[
+  {
+    "name": "GCB Bank",
+    "wiki": "GCB Bank",
+    "categories": [
+      "banks-finance"
+    ],
+    "featured": true
+  },
+  {
+    "name": "Ecobank Ghana",
+    "wiki": "Ecobank",
+    "categories": [
+      "banks-finance"
+    ],
+    "featured": true
+  },
+  {
+    "name": "Fidelity Bank Ghana",
+    "wiki": "Fidelity Bank Ghana",
+    "categories": [
+      "banks-finance"
+    ]
+  },
+  {
+    "name": "Stanbic Bank Ghana",
+    "wiki": "Stanbic Bank Ghana",
+    "categories": [
+      "banks-finance"
+    ]
+  },
+  {
+    "name": "Absa Bank Ghana",
+    "wiki": "Absa Bank Ghana",
+    "categories": [
+      "banks-finance"
+    ]
+  },
+  {
+    "name": "Standard Chartered Ghana",
+    "wiki": "Standard Chartered Bank Ghana",
+    "categories": [
+      "banks-finance"
+    ]
+  },
+  {
+    "name": "CalBank",
+    "wiki": "CalBank",
+    "categories": [
+      "banks-finance"
+    ]
+  },
+  {
+    "name": "Access Bank Ghana",
+    "wiki": "Access Bank Ghana",
+    "categories": [
+      "banks-finance"
+    ]
+  },
+  {
+    "name": "Zenith Bank Ghana",
+    "wiki": "Zenith Bank",
+    "categories": [
+      "banks-finance"
+    ]
+  },
+  {
+    "name": "Republic Bank Ghana",
+    "wiki": "Republic Bank (Ghana)",
+    "categories": [
+      "banks-finance"
+    ]
+  },
+  {
+    "name": "Bank of Ghana",
+    "wiki": "Bank of Ghana",
+    "categories": [
+      "banks-finance",
+      "government"
+    ],
+    "featured": true
+  },
+  {
+    "name": "Agricultural Development Bank",
+    "wiki": "Agricultural Development Bank of Ghana",
+    "categories": [
+      "banks-finance"
+    ],
+    "skip": true
+  },
+  {
+    "name": "Consolidated Bank Ghana",
+    "wiki": "Consolidated Bank Ghana",
+    "categories": [
+      "banks-finance"
+    ]
+  },
+  {
+    "name": "Prudential Bank",
+    "wiki": "Prudential Bank Limited",
+    "categories": [
+      "banks-finance"
+    ]
+  },
+  {
+    "name": "Societe Generale Ghana",
+    "wiki": "Societe Generale Ghana",
+    "categories": [
+      "banks-finance"
+    ]
+  },
+  {
+    "name": "UBA Ghana",
+    "wiki": "United Bank for Africa",
+    "categories": [
+      "banks-finance"
+    ]
+  },
+  {
+    "name": "GTBank Ghana",
+    "wiki": "Guaranty Trust Bank (Ghana)",
+    "categories": [
+      "banks-finance"
+    ]
+  },
+  {
+    "name": "First Atlantic Bank",
+    "wiki": "First Atlantic Bank",
+    "categories": [
+      "banks-finance"
+    ]
+  },
+  {
+    "name": "National Investment Bank",
+    "wiki": "National Investment Bank",
+    "categories": [
+      "banks-finance"
+    ]
+  },
+  {
+    "name": "ARB Apex Bank",
+    "wiki": "ARB Apex Bank",
+    "categories": [
+      "banks-finance"
+    ]
+  },
+  {
+    "name": "Ghana Stock Exchange",
+    "wiki": "Ghana Stock Exchange",
+    "categories": [
+      "banks-finance"
+    ]
+  },
+  {
+    "name": "Universal Merchant Bank",
+    "wiki": "Universal Merchant Bank",
+    "categories": [
+      "banks-finance"
+    ]
+  },
+  {
+    "name": "Bank of Africa Ghana",
+    "wiki": "Bank of Africa Ghana",
+    "categories": [
+      "banks-finance"
+    ]
+  },
+  {
+    "name": "FBNBank Ghana",
+    "wiki": "FBNBank Ghana",
+    "categories": [
+      "banks-finance"
+    ]
+  },
+  {
+    "name": "MTN Ghana",
+    "wiki": "MTN Ghana",
+    "categories": [
+      "telecom"
+    ],
+    "featured": true
+  },
+  {
+    "name": "Telecel Ghana",
+    "wiki": "Telecel Ghana",
+    "categories": [
+      "telecom"
+    ],
+    "featured": true
+  },
+  {
+    "name": "AirtelTigo",
+    "wiki": "AirtelTigo",
+    "categories": [
+      "telecom"
+    ]
+  },
+  {
+    "name": "Glo Ghana",
+    "wiki": "Globacom",
+    "categories": [
+      "telecom"
+    ]
+  },
+  {
+    "name": "Ghana Post",
+    "wiki": "Ghana Post",
+    "categories": [
+      "government",
+      "transport-aviation"
+    ]
+  },
+  {
+    "name": "Hubtel",
+    "wiki": "Hubtel",
+    "categories": [
+      "fintech-technology"
+    ]
+  },
+  {
+    "name": "Zeepay",
+    "wiki": "Zeepay",
+    "categories": [
+      "fintech-technology"
+    ]
+  },
+  {
+    "name": "mPharma",
+    "wiki": "MPharma",
+    "categories": [
+      "fintech-technology",
+      "health"
+    ]
+  },
+  {
+    "name": "Farmerline",
+    "wiki": "Farmerline",
+    "categories": [
+      "fintech-technology"
+    ]
+  },
+  {
+    "name": "Esoko",
+    "wiki": "Esoko",
+    "categories": [
+      "fintech-technology"
+    ]
+  },
+  {
+    "name": "MEST Africa",
+    "wiki": "Meltwater Entrepreneurial School of Technology",
+    "categories": [
+      "fintech-technology",
+      "education"
+    ]
+  },
+  {
+    "name": "Ghana Interbank Payment and Settlement Systems",
+    "wiki": "Ghana Interbank Payment and Settlement Systems",
+    "categories": [
+      "fintech-technology",
+      "banks-finance"
+    ]
+  },
+  {
+    "name": "Coat of Arms of Ghana",
+    "wiki": "Coat of arms of Ghana",
+    "categories": [
+      "government"
+    ],
+    "featured": true
+  },
+  {
+    "name": "Ghana Revenue Authority",
+    "wiki": "Ghana Revenue Authority",
+    "categories": [
+      "government"
+    ]
+  },
+  {
+    "name": "National Communications Authority",
+    "wiki": "National Communications Authority (Ghana)",
+    "categories": [
+      "government"
+    ]
+  },
+  {
+    "name": "Ghana Police Service",
+    "wiki": "Ghana Police Service",
+    "categories": [
+      "government"
+    ]
+  },
+  {
+    "name": "Ghana Armed Forces",
+    "wiki": "Ghana Armed Forces",
+    "categories": [
+      "government"
+    ]
+  },
+  {
+    "name": "Parliament of Ghana",
+    "wiki": "Parliament of Ghana",
+    "categories": [
+      "government"
+    ]
+  },
+  {
+    "name": "Ghana Education Service",
+    "wiki": "Ghana Education Service",
+    "categories": [
+      "government",
+      "education"
+    ]
+  },
+  {
+    "name": "National Health Insurance Authority",
+    "wiki": "National Health Insurance Scheme (Ghana)",
+    "categories": [
+      "government",
+      "health"
+    ]
+  },
+  {
+    "name": "Electoral Commission of Ghana",
+    "wiki": "Electoral Commission of Ghana",
+    "categories": [
+      "government"
+    ]
+  },
+  {
+    "name": "Ghana Statistical Service",
+    "wiki": "Ghana Statistical Service",
+    "categories": [
+      "government"
+    ]
+  },
+  {
+    "name": "Ghana Immigration Service",
+    "wiki": "Ghana Immigration Service",
+    "categories": [
+      "government"
+    ]
+  },
+  {
+    "name": "Ghana Tourism Authority",
+    "wiki": "Ghana Tourism Authority",
+    "categories": [
+      "government"
+    ]
+  },
+  {
+    "name": "Ghana Investment Promotion Centre",
+    "wiki": "Ghana Investment Promotion Centre",
+    "categories": [
+      "government"
+    ]
+  },
+  {
+    "name": "Ghana Cocoa Board",
+    "wiki": "Ghana Cocoa Board",
+    "categories": [
+      "government",
+      "fmcg-retail"
+    ]
+  },
+  {
+    "name": "Ghana Standards Authority",
+    "wiki": "Ghana Standards Authority",
+    "categories": [
+      "government"
+    ]
+  },
+  {
+    "name": "Food and Drugs Authority",
+    "wiki": "Food and Drugs Authority (Ghana)",
+    "categories": [
+      "government",
+      "health"
+    ]
+  },
+  {
+    "name": "SSNIT",
+    "wiki": "Social Security and National Insurance Trust",
+    "categories": [
+      "government",
+      "insurance"
+    ]
+  },
+  {
+    "name": "National Lottery Authority",
+    "wiki": "National Lottery Authority (Ghana)",
+    "categories": [
+      "government"
+    ]
+  },
+  {
+    "name": "Ghana Fire Service",
+    "wiki": "Ghana National Fire Service",
+    "categories": [
+      "government"
+    ]
+  },
+  {
+    "name": "Ghana Prisons Service",
+    "wiki": "Ghana Prisons Service",
+    "categories": [
+      "government"
+    ]
+  },
+  {
+    "name": "Customs Division of GRA",
+    "wiki": "Customs Excise and Preventive Service",
+    "categories": [
+      "government"
+    ]
+  },
+  {
+    "name": "Securities and Exchange Commission Ghana",
+    "wiki": "Securities and Exchange Commission (Ghana)",
+    "categories": [
+      "government",
+      "banks-finance"
+    ]
+  },
+  {
+    "name": "National Identification Authority",
+    "wiki": "National Identification Authority",
+    "categories": [
+      "government"
+    ]
+  },
+  {
+    "name": "Electricity Company of Ghana",
+    "wiki": "Electricity Company of Ghana",
+    "categories": [
+      "energy-mining"
+    ],
+    "featured": true
+  },
+  {
+    "name": "Volta River Authority",
+    "wiki": "Volta River Authority",
+    "categories": [
+      "energy-mining"
+    ]
+  },
+  {
+    "name": "Ghana National Petroleum Corporation",
+    "wiki": "Ghana National Petroleum Corporation",
+    "categories": [
+      "energy-mining"
+    ]
+  },
+  {
+    "name": "GOIL",
+    "wiki": "GOIL",
+    "categories": [
+      "energy-mining"
+    ],
+    "skip": true
+  },
+  {
+    "name": "Ghana Water Limited",
+    "wiki": "Ghana Water Company Limited",
+    "categories": [
+      "energy-mining"
+    ]
+  },
+  {
+    "name": "GRIDCo",
+    "wiki": "Ghana Grid Company",
+    "categories": [
+      "energy-mining"
+    ]
+  },
+  {
+    "name": "Bui Power Authority",
+    "wiki": "Bui Power Authority",
+    "categories": [
+      "energy-mining"
+    ]
+  },
+  {
+    "name": "Tema Oil Refinery",
+    "wiki": "Tema Oil Refinery",
+    "categories": [
+      "energy-mining"
+    ],
+    "skip": true
+  },
+  {
+    "name": "Ghana Gas",
+    "wiki": "Ghana National Gas Company",
+    "categories": [
+      "energy-mining"
+    ]
+  },
+  {
+    "name": "AngloGold Ashanti",
+    "wiki": "AngloGold Ashanti",
+    "categories": [
+      "energy-mining"
+    ]
+  },
+  {
+    "name": "Northern Electricity Distribution Company",
+    "wiki": "Northern Electricity Distribution Company",
+    "categories": [
+      "energy-mining"
+    ]
+  },
+  {
+    "name": "Africa World Airlines",
+    "wiki": "Africa World Airlines",
+    "categories": [
+      "transport-aviation"
+    ],
+    "featured": true
+  },
+  {
+    "name": "PassionAir",
+    "wiki": "PassionAir",
+    "categories": [
+      "transport-aviation"
+    ]
+  },
+  {
+    "name": "Ghana Airports Company",
+    "wiki": "Ghana Airports Company Limited",
+    "categories": [
+      "transport-aviation"
+    ]
+  },
+  {
+    "name": "Ghana Ports and Harbours Authority",
+    "wiki": "Ghana Ports and Harbours Authority",
+    "categories": [
+      "transport-aviation"
+    ]
+  },
+  {
+    "name": "Ghana Railway Company",
+    "wiki": "Ghana Railway Company",
+    "categories": [
+      "transport-aviation"
+    ]
+  },
+  {
+    "name": "Metro Mass Transit",
+    "wiki": "Metro Mass Transit",
+    "categories": [
+      "transport-aviation"
+    ]
+  },
+  {
+    "name": "Intercity STC",
+    "wiki": "Intercity STC Coaches",
+    "categories": [
+      "transport-aviation"
+    ]
+  },
+  {
+    "name": "Ghana Civil Aviation Authority",
+    "wiki": "Ghana Civil Aviation Authority",
+    "categories": [
+      "transport-aviation",
+      "government"
+    ]
+  },
+  {
+    "name": "Ghana Airways",
+    "wiki": "Ghana Airways",
+    "categories": [
+      "transport-aviation"
+    ]
+  },
+  {
+    "name": "University of Ghana",
+    "wiki": "University of Ghana",
+    "categories": [
+      "education"
+    ],
+    "featured": true
+  },
+  {
+    "name": "KNUST",
+    "wiki": "Kwame Nkrumah University of Science and Technology",
+    "categories": [
+      "education"
+    ],
+    "featured": true,
+    "skip": true
+  },
+  {
+    "name": "University of Cape Coast",
+    "wiki": "University of Cape Coast",
+    "categories": [
+      "education"
+    ]
+  },
+  {
+    "name": "University of Education, Winneba",
+    "wiki": "University of Education, Winneba",
+    "categories": [
+      "education"
+    ]
+  },
+  {
+    "name": "Ashesi University",
+    "wiki": "Ashesi University",
+    "categories": [
+      "education"
+    ]
+  },
+  {
+    "name": "GIMPA",
+    "wiki": "Ghana Institute of Management and Public Administration",
+    "categories": [
+      "education"
+    ]
+  },
+  {
+    "name": "University of Professional Studies",
+    "wiki": "University of Professional Studies",
+    "categories": [
+      "education"
+    ]
+  },
+  {
+    "name": "University for Development Studies",
+    "wiki": "University for Development Studies",
+    "categories": [
+      "education"
+    ],
+    "skip": true
+  },
+  {
+    "name": "University of Mines and Technology",
+    "wiki": "University of Mines and Technology",
+    "categories": [
+      "education"
+    ]
+  },
+  {
+    "name": "University of Health and Allied Sciences",
+    "wiki": "University of Health and Allied Sciences",
+    "categories": [
+      "education"
+    ],
+    "skip": true
+  },
+  {
+    "name": "Central University",
+    "wiki": "Central University (Ghana)",
+    "categories": [
+      "education"
+    ],
+    "skip": true
+  },
+  {
+    "name": "Accra Technical University",
+    "wiki": "Accra Technical University",
+    "categories": [
+      "education"
+    ]
+  },
+  {
+    "name": "Kumasi Technical University",
+    "wiki": "Kumasi Technical University",
+    "categories": [
+      "education"
+    ]
+  },
+  {
+    "name": "Valley View University",
+    "wiki": "Valley View University",
+    "categories": [
+      "education"
+    ]
+  },
+  {
+    "name": "Achimota School",
+    "wiki": "Achimota School",
+    "categories": [
+      "education"
+    ]
+  },
+  {
+    "name": "Mfantsipim School",
+    "wiki": "Mfantsipim School",
+    "categories": [
+      "education"
+    ]
+  },
+  {
+    "name": "Wesley Girls' High School",
+    "wiki": "Wesley Girls' Senior High School",
+    "categories": [
+      "education"
+    ]
+  },
+  {
+    "name": "Prempeh College",
+    "wiki": "Prempeh College",
+    "categories": [
+      "education"
+    ]
+  },
+  {
+    "name": "WAEC",
+    "wiki": "West African Examinations Council",
+    "categories": [
+      "education"
+    ]
+  },
+  {
+    "name": "University of Energy and Natural Resources",
+    "wiki": "University of Energy and Natural Resources",
+    "categories": [
+      "education"
+    ]
+  },
+  {
+    "name": "Ghana Broadcasting Corporation",
+    "wiki": "Ghana Broadcasting Corporation",
+    "categories": [
+      "media"
+    ],
+    "featured": true
+  },
+  {
+    "name": "Multimedia Group",
+    "wiki": "Multimedia Group Limited",
+    "categories": [
+      "media"
+    ]
+  },
+  {
+    "name": "Joy FM",
+    "wiki": "Joy FM",
+    "categories": [
+      "media"
+    ]
+  },
+  {
+    "name": "TV3 Ghana",
+    "wiki": "TV3 (Ghanaian TV channel)",
+    "categories": [
+      "media"
+    ]
+  },
+  {
+    "name": "Citi FM",
+    "wiki": "Citi FM",
+    "categories": [
+      "media"
+    ]
+  },
+  {
+    "name": "UTV Ghana",
+    "wiki": "UTV (Ghana)",
+    "categories": [
+      "media"
+    ]
+  },
+  {
+    "name": "Adom FM",
+    "wiki": "Adom FM",
+    "categories": [
+      "media"
+    ]
+  },
+  {
+    "name": "Daily Graphic",
+    "wiki": "Daily Graphic",
+    "categories": [
+      "media"
+    ]
+  },
+  {
+    "name": "Peace FM",
+    "wiki": "Peace FM",
+    "categories": [
+      "media"
+    ]
+  },
+  {
+    "name": "GhanaWeb",
+    "wiki": "GhanaWeb",
+    "categories": [
+      "media"
+    ]
+  },
+  {
+    "name": "Media General Ghana",
+    "wiki": "Media General Ghana",
+    "categories": [
+      "media"
+    ]
+  },
+  {
+    "name": "GhOne TV",
+    "wiki": "GHOne TV",
+    "categories": [
+      "media"
+    ]
+  },
+  {
+    "name": "Metro TV Ghana",
+    "wiki": "Metro TV (Ghana)",
+    "categories": [
+      "media"
+    ]
+  },
+  {
+    "name": "Ghanaian Times",
+    "wiki": "Ghanaian Times",
+    "categories": [
+      "media"
+    ]
+  },
+  {
+    "name": "Kasapreko",
+    "wiki": "Kasapreko",
+    "categories": [
+      "fmcg-retail"
+    ]
+  },
+  {
+    "name": "Fan Milk",
+    "wiki": "Fan Milk International",
+    "categories": [
+      "fmcg-retail"
+    ]
+  },
+  {
+    "name": "Accra Brewery",
+    "wiki": "Accra Brewery Limited",
+    "categories": [
+      "fmcg-retail"
+    ]
+  },
+  {
+    "name": "Guinness Ghana Breweries",
+    "wiki": "Guinness Ghana Breweries",
+    "categories": [
+      "fmcg-retail"
+    ]
+  },
+  {
+    "name": "Unilever Ghana",
+    "wiki": "Unilever Ghana",
+    "categories": [
+      "fmcg-retail"
+    ]
+  },
+  {
+    "name": "Cocoa Processing Company",
+    "wiki": "Cocoa Processing Company",
+    "categories": [
+      "fmcg-retail",
+      "manufacturing"
+    ]
+  },
+  {
+    "name": "Melcom",
+    "wiki": "Melcom",
+    "categories": [
+      "fmcg-retail"
+    ]
+  },
+  {
+    "name": "Blue Skies",
+    "wiki": "Blue Skies (company)",
+    "categories": [
+      "fmcg-retail"
+    ]
+  },
+  {
+    "name": "Voltic",
+    "wiki": "Voltic (Ghana)",
+    "categories": [
+      "fmcg-retail"
+    ]
+  },
+  {
+    "name": "Twellium Industrial Company",
+    "wiki": "Twellium Industrial Company",
+    "categories": [
+      "fmcg-retail",
+      "manufacturing"
+    ]
+  },
+  {
+    "name": "SIC Insurance",
+    "wiki": "SIC Insurance Company",
+    "categories": [
+      "insurance"
+    ]
+  },
+  {
+    "name": "Enterprise Group",
+    "wiki": "Enterprise Group (Ghana)",
+    "categories": [
+      "insurance"
+    ]
+  },
+  {
+    "name": "Star Assurance",
+    "wiki": "Star Assurance",
+    "categories": [
+      "insurance"
+    ]
+  },
+  {
+    "name": "Vanguard Assurance",
+    "wiki": "Vanguard Assurance",
+    "categories": [
+      "insurance"
+    ]
+  },
+  {
+    "name": "Glico Group",
+    "wiki": "Glico Group",
+    "categories": [
+      "insurance"
+    ]
+  },
+  {
+    "name": "Ghana Football Association",
+    "wiki": "Ghana Football Association",
+    "categories": [
+      "sports"
+    ],
+    "featured": true
+  },
+  {
+    "name": "Ghana Black Stars",
+    "wiki": "Ghana national football team",
+    "categories": [
+      "sports"
+    ]
+  },
+  {
+    "name": "Asante Kotoko",
+    "wiki": "Asante Kotoko S.C.",
+    "categories": [
+      "sports"
+    ],
+    "featured": true
+  },
+  {
+    "name": "Accra Hearts of Oak",
+    "wiki": "Accra Hearts of Oak S.C.",
+    "categories": [
+      "sports"
+    ],
+    "featured": true
+  },
+  {
+    "name": "Medeama SC",
+    "wiki": "Medeama S.C.",
+    "categories": [
+      "sports"
+    ]
+  },
+  {
+    "name": "Aduana Stars",
+    "wiki": "Aduana Stars F.C.",
+    "categories": [
+      "sports"
+    ]
+  },
+  {
+    "name": "Dreams FC",
+    "wiki": "Dreams F.C. (Ghana)",
+    "categories": [
+      "sports"
+    ]
+  },
+  {
+    "name": "Legon Cities FC",
+    "wiki": "Legon Cities F.C.",
+    "categories": [
+      "sports"
+    ]
+  },
+  {
+    "name": "Berekum Chelsea",
+    "wiki": "Berekum Chelsea F.C.",
+    "categories": [
+      "sports"
+    ]
+  },
+  {
+    "name": "Bechem United",
+    "wiki": "Bechem United F.C.",
+    "categories": [
+      "sports"
+    ]
+  },
+  {
+    "name": "Great Olympics",
+    "wiki": "Accra Great Olympics F.C.",
+    "categories": [
+      "sports"
+    ]
+  },
+  {
+    "name": "Ashanti Gold SC",
+    "wiki": "Ashanti Gold S.C.",
+    "categories": [
+      "sports"
+    ]
+  },
+  {
+    "name": "Right to Dream Academy",
+    "wiki": "Right to Dream Academy",
+    "categories": [
+      "sports"
+    ]
+  },
+  {
+    "name": "Ghana Olympic Committee",
+    "wiki": "Ghana Olympic Committee",
+    "categories": [
+      "sports"
+    ]
+  },
+  {
+    "name": "Ghana Premier League",
+    "wiki": "Ghana Premier League",
+    "categories": [
+      "sports"
+    ]
+  },
+  {
+    "name": "Nations FC",
+    "wiki": "Nations F.C.",
+    "categories": [
+      "sports"
+    ]
+  },
+  {
+    "name": "Samartex FC",
+    "wiki": "Samartex 1996 F.C.",
+    "categories": [
+      "sports"
+    ]
+  },
+  {
+    "name": "Korle Bu Teaching Hospital",
+    "wiki": "Korle-Bu Teaching Hospital",
+    "categories": [
+      "health"
+    ]
+  },
+  {
+    "name": "Komfo Anokye Teaching Hospital",
+    "wiki": "Komfo Anokye Teaching Hospital",
+    "categories": [
+      "health"
+    ]
+  },
+  {
+    "name": "Ghana Health Service",
+    "wiki": "Ghana Health Service",
+    "categories": [
+      "health",
+      "government"
+    ]
+  },
+  {
+    "name": "Ernest Chemists",
+    "wiki": "Ernest Chemists",
+    "categories": [
+      "health"
+    ]
+  },
+  {
+    "name": "37 Military Hospital",
+    "wiki": "37 Military Hospital",
+    "categories": [
+      "health"
+    ],
+    "skip": true
+  },
+  {
+    "name": "Ghana Medical Association",
+    "wiki": "Ghana Medical Association",
+    "categories": [
+      "health",
+      "ngo"
+    ]
+  },
+  {
+    "name": "New Patriotic Party",
+    "wiki": "New Patriotic Party",
+    "categories": [
+      "political-parties"
+    ]
+  },
+  {
+    "name": "National Democratic Congress",
+    "wiki": "National Democratic Congress (Ghana)",
+    "categories": [
+      "political-parties"
+    ]
+  },
+  {
+    "name": "Convention People's Party",
+    "wiki": "Convention People's Party",
+    "categories": [
+      "political-parties"
+    ]
+  },
+  {
+    "name": "People's National Convention",
+    "wiki": "People's National Convention (Ghana)",
+    "categories": [
+      "political-parties"
+    ]
+  },
+  {
+    "name": "Progressive People's Party",
+    "wiki": "Progressive People's Party",
+    "categories": [
+      "political-parties"
+    ]
+  },
+  {
+    "name": "Kantanka Automobile",
+    "wiki": "Kantanka Automobile",
+    "categories": [
+      "manufacturing"
+    ]
+  },
+  {
+    "name": "Ghana Cement (GHACEM)",
+    "wiki": "Ghacem",
+    "categories": [
+      "manufacturing"
+    ]
+  },
+  {
+    "name": "Volta Aluminium Company",
+    "wiki": "Volta Aluminium Company",
+    "categories": [
+      "manufacturing",
+      "energy-mining"
+    ]
+  },
+  {
+    "name": "Golden Exotics",
+    "wiki": "Golden Exotics",
+    "categories": [
+      "fmcg-retail"
+    ]
+  },
+  {
+    "name": "Ghana Red Cross Society",
+    "wiki": "Ghana Red Cross Society",
+    "categories": [
+      "ngo"
+    ]
+  },
+  {
+    "name": "Ghana Bar Association",
+    "wiki": "Ghana Bar Association",
+    "categories": [
+      "ngo"
+    ]
+  },
+  {
+    "name": "Trades Union Congress Ghana",
+    "wiki": "Trades Union Congress (Ghana)",
+    "categories": [
+      "ngo"
+    ]
+  },
+  {
+    "name": "Ghana Journalists Association",
+    "wiki": "Ghana Journalists Association",
+    "categories": [
+      "ngo",
+      "media"
+    ]
+  },
+  {
+    "name": "Ghana Scouts Association",
+    "wiki": "The Ghana Scout Association",
+    "categories": [
+      "ngo"
+    ]
+  },
+  {
+    "name": "Association of Ghana Industries",
+    "wiki": "Association of Ghana Industries",
+    "categories": [
+      "ngo",
+      "manufacturing"
+    ]
+  },
+  {
+    "name": "Ghana Chamber of Commerce",
+    "wiki": "Ghana National Chamber of Commerce and Industry",
+    "categories": [
+      "ngo"
+    ]
+  }
+]

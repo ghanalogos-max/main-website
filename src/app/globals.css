@@ -1,0 +1,69 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+.site-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: #f7f7f4;
+}
+
+.dark .site-bg {
+  background: #07090a;
+}
+
+/* Kente-inspired stripe used as an accent bar. */
+.kente {
+  background-image: repeating-linear-gradient(
+    90deg,
+    #ce1126 0 24px,
+    #fcd116 24px 48px,
+    #006b3f 48px 72px,
+    #0a0a0a 72px 80px
+  );
+}
+
+/* Transparency checkerboard behind logo previews. */
+.checker {
+  background-color: #fff;
+  background-image:
+    linear-gradient(45deg, #f1f1ee 25%, transparent 25%),
+    linear-gradient(-45deg, #f1f1ee 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #f1f1ee 75%),
+    linear-gradient(-45deg, transparent 75%, #f1f1ee 75%);
+  background-size: 16px 16px;
+  background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-gh-green focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none;
+  }
+  .btn-primary {
+    @apply btn bg-gh-green text-white hover:bg-[#005A35] shadow-sm;
+  }
+  .btn-dark {
+    @apply btn bg-gh-black text-white hover:bg-gh-green dark:bg-white dark:text-gh-black dark:hover:bg-gh-gold;
+  }
+  .btn-outline {
+    @apply btn border border-gh-black/15 bg-white hover:border-gh-green hover:text-gh-green dark:border-white/15 dark:bg-white/5 dark:hover:border-gh-gold dark:hover:text-gh-gold;
+  }
+  .btn-gold {
+    @apply btn bg-gh-gold text-gh-black hover:bg-[#F0C200] shadow-sm;
+  }
+  .panel {
+    @apply rounded-2xl border border-gh-black/10 bg-white dark:border-white/10 dark:bg-ink-900;
+  }
+  .input {
+    @apply w-full rounded-xl border border-gh-black/15 bg-white px-4 py-2.5 text-sm placeholder:text-gh-black/40 focus:outline-none focus:ring-2 focus:ring-gh-green dark:border-white/15 dark:bg-white/5 dark:placeholder:text-white/30;
+  }
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-gh-green dark:text-gh-gold;
+  }
+}

@@ -1,0 +1,17 @@
+[
+  { "title": "Banks & Finance", "slug": "banks-finance", "order": 1, "description": "Logos of commercial banks, the central bank, rural banks, the stock exchange and financial institutions operating in Ghana." },
+  { "title": "Telecom", "slug": "telecom", "order": 2, "description": "Logos of Ghana's mobile network operators and telecommunications providers." },
+  { "title": "Fintech & Technology", "slug": "fintech-technology", "order": 3, "description": "Logos of Ghanaian payment platforms, startups, tech hubs and technology companies." },
+  { "title": "Government & Agencies", "slug": "government", "order": 4, "description": "Official emblems and logos of Ghana's government ministries, regulators, security services and public agencies." },
+  { "title": "Energy & Mining", "slug": "energy-mining", "order": 5, "description": "Logos of Ghanaian power, oil and gas, water and mining companies." },
+  { "title": "Transport & Aviation", "slug": "transport-aviation", "order": 6, "description": "Logos of Ghanaian airlines, airports, ports, rail and road transport operators." },
+  { "title": "Education", "slug": "education", "order": 7, "description": "Crests and logos of Ghanaian universities, technical universities, schools and examination bodies." },
+  { "title": "Media & Broadcasting", "slug": "media", "order": 8, "description": "Logos of Ghanaian TV stations, radio stations, newspapers and media groups." },
+  { "title": "Food, Beverage & Retail", "slug": "fmcg-retail", "order": 9, "description": "Logos of Ghanaian food, drinks, cocoa and retail brands." },
+  { "title": "Insurance", "slug": "insurance", "order": 10, "description": "Logos of insurance companies and pension providers in Ghana." },
+  { "title": "Sports & Football", "slug": "sports", "order": 11, "description": "Crests and logos of Ghanaian football clubs, national teams and sports bodies." },
+  { "title": "Health", "slug": "health", "order": 12, "description": "Logos of Ghanaian hospitals, health services, pharmacies and health-tech companies." },
+  { "title": "Political Parties", "slug": "political-parties", "order": 13, "description": "Official logos of registered political parties in Ghana." },
+  { "title": "Manufacturing & Automotive", "slug": "manufacturing", "order": 14, "description": "Logos of Ghanaian manufacturers and automotive brands." },
+  { "title": "NGOs & Associations", "slug": "ngo", "order": 15, "description": "Logos of non-profits, professional bodies and associations in Ghana." }
+]
