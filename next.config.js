@@ -12,8 +12,8 @@ const nextConfig = {
     return [
       {
         source: "/:path*",
-        has: [{ type: "host", value: "www.ghanalogos.com" }],
-        destination: "https://ghanalogos.com/:path*",
+        has: [{ type: "host", value: "ghanalogos.com" }],
+        destination: "https://www.ghanalogos.com/:path*",
         permanent: true,
       },
     ];

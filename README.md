@@ -3,7 +3,7 @@
 A free, open source library of high quality vector logos for Ghanaian
 companies, banks, telecoms, government institutions, and organisations —
 built by [Celestial Web Solutions](https://celestialwebsolutions.net).
-Live at [ghanalogos.com](https://ghanalogos.com).
+Live at [ghanalogos.com](https://www.ghanalogos.com).
 
 Inspired by [NigeriaLogos](https://nigerialogos.com).
 
@@ -127,7 +127,7 @@ Visit `http://localhost:3000`.
 
 | Variable | Required | Purpose |
 | --- | --- | --- |
-| `NEXT_PUBLIC_SITE_URL` | yes | `https://ghanalogos.com` |
+| `NEXT_PUBLIC_SITE_URL` | yes | `https://www.ghanalogos.com` |
 | `DOWNLOAD_SECRET` | **yes (prod)** | Signs quota/premium cookies. 32+ random bytes. |
 | `PAYSTACK_SECRET_KEY` | for Premium | `sk_live_…` (or `sk_test_…` while testing) |
 | `NEXT_PUBLIC_PREMIUM_MONTHLY_GHS` | no | Default `50` |
@@ -137,8 +137,8 @@ Visit `http://localhost:3000`.
 | `UPSTASH_REDIS_REST_URL` / `_TOKEN` | for the API | API accounts & keys; also per-IP daily limit |
 | `RESEND_API_KEY` / `EMAIL_FROM` | for sign-up | Verification and password-reset emails via Resend |
 | `ARKESEL_API_KEY` / `SMS_SENDER_ID` | for sign-up | Verification SMS via Arkesel |
-| `GITHUB_CLIENT_ID` / `_SECRET` | no | "Continue with GitHub". Callback: `https://ghanalogos.com/api/auth/github/callback` |
-| `GOOGLE_CLIENT_ID` / `_SECRET` | no | "Continue with Google". Redirect URI: `https://ghanalogos.com/api/auth/google/callback` |
+| `GITHUB_CLIENT_ID` / `_SECRET` | no | "Continue with GitHub". Callback: `https://www.ghanalogos.com/api/auth/github/callback` |
+| `GOOGLE_CLIENT_ID` / `_SECRET` | no | "Continue with Google". Redirect URI: `https://www.ghanalogos.com/api/auth/google/callback` |
 | `NEXT_PUBLIC_API_INDIVIDUAL_GHS` / `_TEAM_GHS` / `_ORGANISATION_GHS` | no | Monthly API prices. Defaults `99` / `399` / `1199` |
 | `NEXT_PUBLIC_GITHUB_URL` | no | Shows a GitHub link in the footer |
 | `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | no | Google Search Console HTML-tag code |
@@ -170,10 +170,10 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
    `www` is permanently redirected to the apex domain (see
    `next.config.js`). HTTPS certificates are issued automatically.
 5. In the Paystack dashboard, no callback URL is needed — the app sends
-   `https://ghanalogos.com/api/paystack/verify` with each transaction.
+   `https://www.ghanalogos.com/api/paystack/verify` with each transaction.
 6. Verify the domain in Google Search Console and Bing Webmaster Tools (set
    the two `*_SITE_VERIFICATION` variables, redeploy), then submit
-   `https://ghanalogos.com/sitemap.xml` in both.
+   `https://www.ghanalogos.com/sitemap.xml` in both.
 
 ## Setting up Sanity Studio
 

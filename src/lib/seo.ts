@@ -1,7 +1,7 @@
 import { MIME_TYPES, type Logo } from "./types";
 
 export const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL || "https://ghanalogos.com"
+  process.env.NEXT_PUBLIC_SITE_URL || "https://www.ghanalogos.com"
 ).replace(/\/$/, "");
 export const SITE_NAME = "GhanaLogos";
 export const PARENT_COMPANY = "Celestial Web Solutions";

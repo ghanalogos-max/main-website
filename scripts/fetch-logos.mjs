@@ -11,7 +11,7 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const API = "https://en.wikipedia.org/w/api.php";
-const UA = "GhanaLogosBot/1.0 (https://ghanalogos.com; hello@ghanalogos.com)";
+const UA = "GhanaLogosBot/1.0 (https://www.ghanalogos.com; hello@ghanalogos.com)";
 const FORCE = process.argv.includes("--force");
 
 const LOGO_FIELDS = ["logo", "image_logo", "logo_image", "badge", "crest", "emblem", "seal", "image"];
