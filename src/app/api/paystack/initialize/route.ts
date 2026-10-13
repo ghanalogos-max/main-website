@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Choose a plan." }, { status: 400 });
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || req.nextUrl.origin;
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || req.nextUrl.origin).trim().replace(/\/+$/, "");
   try {
     const { authorization_url } = await initializePayment({
       email,

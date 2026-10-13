@@ -49,7 +49,7 @@ export function safeNext(value: unknown, fallback = "/developers/dashboard"): st
 
 export function siteOrigin(req: NextRequest): string {
   if (process.env.NODE_ENV !== "production") return req.nextUrl.origin;
-  return process.env.NEXT_PUBLIC_SITE_URL || req.nextUrl.origin;
+  return (process.env.NEXT_PUBLIC_SITE_URL || req.nextUrl.origin).trim().replace(/\/+$/, "");
 }
 
 // Passwords: scrypt with a per-password salt, stored as "scrypt$salt$hash".

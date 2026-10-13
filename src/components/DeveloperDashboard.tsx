@@ -25,7 +25,7 @@ import {
   PhoneIcon,
 } from "./icons";
 
-const SITE = process.env.NEXT_PUBLIC_SITE_URL || "https://www.ghanalogos.com";
+const SITE = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.ghanalogos.com").trim().replace(/\/+$/, "");
 
 const formatDate = (ms: number) =>
   new Date(ms).toLocaleDateString("en-GH", { day: "numeric", month: "short", year: "numeric" });
