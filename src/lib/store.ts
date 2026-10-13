@@ -1,8 +1,9 @@
 // Key-value storage on Upstash Redis (REST). In development, or when
 // API_STORE=memory, an in-process map is used instead — it is lost on every
 // restart, so it must never back real customer accounts.
-const redisUrl = process.env.UPSTASH_REDIS_REST_URL;
-const redisToken = process.env.UPSTASH_REDIS_REST_TOKEN;
+// The Vercel Marketplace Upstash integration names these KV_REST_API_*.
+const redisUrl = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL;
+const redisToken = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
 
 export const redisEnabled = Boolean(redisUrl && redisToken);
 const memoryEnabled =
