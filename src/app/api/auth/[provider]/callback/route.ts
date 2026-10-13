@@ -16,7 +16,11 @@ export const dynamic = "force-dynamic";
 export async function GET(req: NextRequest, { params }: { params: { provider: string } }) {
   const login = new URL("/login", req.nextUrl.origin);
   const provider = params.provider;
-  if (!storeEnabled || !isProvider(provider) || !oauthProviders[provider]) {
+  if (!storeEnabled) {
+    login.searchParams.set("error", "Accounts aren't available yet. Please try again later.");
+    return NextResponse.redirect(login);
+  }
+  if (!isProvider(provider) || !oauthProviders[provider]) {
     login.searchParams.set("error", "That sign-in option isn't available.");
     return NextResponse.redirect(login);
   }
