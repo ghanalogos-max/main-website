@@ -1,3 +1,4 @@
+import { randomUUID } from "crypto";
 import { createClient } from "@sanity/client";
 
 export const sanityEnabled = Boolean(
@@ -41,16 +42,31 @@ export async function createSubmission(input: SubmissionInput) {
     Buffer.from(await input.file.arrayBuffer()),
     { filename: input.file.name, contentType: input.file.type || undefined }
   );
-  return writeClient.create({
-    _type: "submission",
-    companyName: input.companyName,
-    submitterName: input.submitterName,
-    submitterEmail: input.submitterEmail,
-    sourceUrl: input.sourceUrl,
-    file: { _type: "file", asset: { _type: "reference", _ref: asset._id } },
-    status: "pending",
-    submittedAt: new Date().toISOString(),
-  });
+  const id = `submission-${randomUUID()}`;
+  // The dataset is publicly readable; IDs under "private." need an authenticated
+  // read, so the email lives there instead of on the submission itself.
+  return writeClient
+    .transaction()
+    .create({
+      _id: id,
+      _type: "submission",
+      companyName: input.companyName,
+      submitterName: input.submitterName,
+      sourceUrl: input.sourceUrl,
+      file: { _type: "file", asset: { _type: "reference", _ref: asset._id } },
+      status: "pending",
+      submittedAt: new Date().toISOString(),
+    })
+    .create({
+      _id: privateContactId(id),
+      _type: "submissionContact",
+      email: input.submitterEmail,
+    })
+    .commit();
+}
+
+export function privateContactId(submissionId: string): string {
+  return `private.${submissionId.replace(/^drafts\./, "")}`;
 }
 
 export function incrementDownloadCount(id: string | undefined) {
