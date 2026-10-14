@@ -22,7 +22,7 @@ const SECTIONS = [
   },
   {
     title: "Cookies",
-    body: "We use essential cookies only: one for your download quota, one for Premium status, one to keep you signed in, a short-lived one while you sign in with Google or GitHub, and a local setting for light/dark mode. We do not use advertising cookies.",
+    body: "We use essential cookies for your download quota, Premium status, keeping you signed in, a short-lived one while you sign in with Google or GitHub, and a local setting for light/dark mode. We also use Google Analytics to understand which pages and logos are popular; it sets its own cookies and collects anonymous usage data such as pages visited, device type and approximate location. You can opt out with Google's Analytics opt-out browser add-on. We do not use advertising cookies.",
   },
   {
     title: "Contact",
