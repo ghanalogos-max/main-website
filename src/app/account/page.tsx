@@ -62,6 +62,23 @@ function Stat({ label, value, hint }: { label: string; value: string; hint?: str
   );
 }
 
+function signInNote(summary: Awaited<ReturnType<typeof accountSummary>>): string {
+  const { password, google, github } = summary.signInMethods;
+  const methods = [password && "your email and password", google && "Google", github && "GitHub"].filter(
+    Boolean
+  ) as string[];
+  const list =
+    methods.length > 1 ? `${methods.slice(0, -1).join(", ")} or ${methods[methods.length - 1]}` : methods[0];
+  const parts = [
+    list && `You can sign in with ${list}.`,
+    password
+      ? "Forgot your password? Use “Forgot password” on the sign-in page."
+      : "Set a password to also sign in with your email address.",
+    summary.payments.length > 0 && "You can also sign in with the receipt number from any API plan payment.",
+  ];
+  return parts.filter(Boolean).join(" ");
+}
+
 async function contributionData(account: DevAccount) {
   const [approved, submissions] = await Promise.all([
     approvedCountFor(account.id).catch(() => 0),
@@ -203,7 +220,7 @@ async function Overview({
           ))}
         </ul>
         <p className="mt-3 text-xs text-gh-black/50 dark:text-white/40">
-          Forgot your password? You can always sign in with the receipt number from any plan payment.
+          {signInNote(summary)}
         </p>
       </section>
     </div>
