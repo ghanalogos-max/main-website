@@ -24,9 +24,18 @@ import {
   REWARD_GHS,
   contributorEarnings,
 } from "@/lib/contributors";
-import { accountSummary, effectivePlan, getSessionAccount, type DevAccount } from "@/lib/developer";
+import { oauthProviders } from "@/lib/auth";
+import {
+  accountSummary,
+  effectivePlan,
+  getSessionAccount,
+  type DevAccount,
+  type Provider,
+} from "@/lib/developer";
 import { approvedCountFor, submissionsFor } from "@/lib/sanity.client";
 import { storeEnabled } from "@/lib/store";
+
+const PROVIDER_LABELS: Record<Provider, string> = { github: "GitHub", google: "Google" };
 
 export const metadata: Metadata = {
   title: "Your Account",
@@ -64,16 +73,12 @@ function Stat({ label, value, hint }: { label: string; value: string; hint?: str
 
 function signInNote(summary: Awaited<ReturnType<typeof accountSummary>>): string {
   const { password, google, github } = summary.signInMethods;
-  const methods = [password && "your email and password", google && "Google", github && "GitHub"].filter(
+  const methods = [password && "your password", google && "Google", github && "GitHub"].filter(
     Boolean
   ) as string[];
-  const list =
-    methods.length > 1 ? `${methods.slice(0, -1).join(", ")} or ${methods[methods.length - 1]}` : methods[0];
   const parts = [
-    list && `You can sign in with ${list}.`,
-    password
-      ? "Forgot your password? Use “Forgot password” on the sign-in page."
-      : "Set a password to also sign in with your email address.",
+    methods.length === 1 &&
+      `Add a second sign-in method so you can still get in if you lose access to ${methods[0]}.`,
     summary.payments.length > 0 && "You can also sign in with the receipt number from any API plan payment.",
   ];
   return parts.filter(Boolean).join(" ");
@@ -90,7 +95,7 @@ async function contributionData(account: DevAccount) {
 export default async function AccountPage({
   searchParams,
 }: {
-  searchParams: { tab?: string; status?: string; message?: string };
+  searchParams: { tab?: string; status?: string; message?: string; connected?: string; error?: string };
 }) {
   if (!storeEnabled) {
     return (
@@ -149,7 +154,22 @@ export default async function AccountPage({
         {tab === "developer" && (
           <DeveloperDashboard status={searchParams.status} message={searchParams.message} />
         )}
-        {tab === "overview" && <Overview account={account} summary={summary} />}
+        {tab === "overview" && (
+          <>
+            {searchParams.connected && searchParams.connected in PROVIDER_LABELS && (
+              <p className="mb-6 flex items-center gap-2 rounded-2xl border border-gh-green/30 bg-gh-green/10 p-4 text-sm font-medium text-gh-green">
+                <CheckIcon size={18} />
+                {PROVIDER_LABELS[searchParams.connected as Provider]} is connected. You can now use it to sign in.
+              </p>
+            )}
+            {searchParams.error && (
+              <p className="mb-6 rounded-2xl border border-gh-red/30 bg-gh-red/10 p-4 text-sm font-medium text-gh-red">
+                {searchParams.error.slice(0, 200)}
+              </p>
+            )}
+            <Overview account={account} summary={summary} />
+          </>
+        )}
         {tab === "contributions" && <Contributions account={account} phone={summary.phone} />}
       </div>
     </div>
@@ -211,17 +231,22 @@ async function Overview({
                 <Link href="/forgot-password" className="text-xs font-semibold text-gh-green hover:underline dark:text-gh-gold">
                   Set a password
                 </Link>
+              ) : oauthProviders[id as Provider] ? (
+                <a
+                  href={`/api/auth/${id}?link=1&next=%2Faccount`}
+                  className="text-xs font-semibold text-gh-green hover:underline dark:text-gh-gold"
+                >
+                  Connect
+                </a>
               ) : (
-                <span className="text-xs text-gh-black/50 dark:text-white/40">
-                  Sign in with {label} using {summary.email} to connect
-                </span>
+                <span className="text-xs text-gh-black/50 dark:text-white/40">Not available yet</span>
               )}
             </li>
           ))}
         </ul>
-        <p className="mt-3 text-xs text-gh-black/50 dark:text-white/40">
-          {signInNote(summary)}
-        </p>
+        {signInNote(summary) && (
+          <p className="mt-3 text-xs text-gh-black/50 dark:text-white/40">{signInNote(summary)}</p>
+        )}
       </section>
     </div>
   );

@@ -135,9 +135,15 @@ export function isProvider(value: string): value is Provider {
 const callbackUrl = (req: NextRequest, provider: Provider) =>
   `${siteOrigin(req)}/api/auth/${provider}/callback`;
 
-export function oauthAuthorizeUrl(req: NextRequest, provider: Provider, next: string): string {
+/** `link` connects the provider to the signed-in account instead of signing in. */
+export function oauthAuthorizeUrl(
+  req: NextRequest,
+  provider: Provider,
+  next: string,
+  link = false
+): string {
   const state = randomBytes(16).toString("base64url");
-  cookies().set(OAUTH_COOKIE, seal({ state, provider, next }), {
+  cookies().set(OAUTH_COOKIE, seal({ state, provider, next, link }), {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
@@ -173,8 +179,8 @@ export interface OAuthProfile {
 export async function oauthProfile(
   req: NextRequest,
   provider: Provider
-): Promise<{ profile: OAuthProfile; next: string }> {
-  const saved = unseal<{ state: string; provider: string; next: string }>(
+): Promise<{ profile: OAuthProfile; next: string; link: boolean }> {
+  const saved = unseal<{ state: string; provider: string; next: string; link?: boolean }>(
     cookies().get(OAUTH_COOKIE)?.value
   );
   cookies().delete(OAUTH_COOKIE);
@@ -187,7 +193,7 @@ export async function oauthProfile(
     provider === "github"
       ? await githubProfile(req, code)
       : await googleProfile(req, code);
-  return { profile, next: safeNext(saved.next) };
+  return { profile, next: safeNext(saved.next), link: Boolean(saved.link) };
 }
 
 async function githubProfile(req: NextRequest, code: string): Promise<OAuthProfile> {

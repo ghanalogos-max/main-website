@@ -189,10 +189,12 @@ export async function createAccount(
 export async function linkProvider(
   account: DevAccount,
   provider: Provider,
-  providerId: string
+  providerId: string,
+  /** The provider confirmed the account's own email address. */
+  emailVerified = true
 ) {
   account[provider === "github" ? "githubId" : "googleId"] = providerId;
-  account.emailVerifiedAt ??= Date.now();
+  if (emailVerified) account.emailVerifiedAt ??= Date.now();
   await kv.set(providerKey(provider, providerId), account.id);
   await saveAccount(account);
 }

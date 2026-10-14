@@ -16,5 +16,6 @@ export async function GET(req: NextRequest, { params }: { params: { provider: st
     return NextResponse.redirect(login);
   }
   const next = safeNext(req.nextUrl.searchParams.get("next"));
-  return NextResponse.redirect(oauthAuthorizeUrl(req, params.provider, next));
+  const link = req.nextUrl.searchParams.get("link") === "1";
+  return NextResponse.redirect(oauthAuthorizeUrl(req, params.provider, next, link));
 }
