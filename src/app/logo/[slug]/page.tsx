@@ -140,6 +140,14 @@ export default async function LogoPage({
       </a>,
     ]);
   }
+  if (logo.contributorName) {
+    details.push([
+      "Contributed by",
+      <Link key="c" href="/contributors" className="text-gh-green hover:underline dark:text-gh-gold">
+        {logo.contributorName}
+      </Link>,
+    ]);
+  }
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">

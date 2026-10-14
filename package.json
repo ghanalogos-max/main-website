@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "sanity:import": "node --env-file=.env.local scripts/import-to-sanity.mjs"
+    "sanity:import": "node --env-file=.env.local scripts/import-to-sanity.mjs",
+    "payouts": "node --env-file=.env.local scripts/contributor-payouts.mjs"
   },
   "dependencies": {
     "@mingcute/react": "^3.0.2",

@@ -26,6 +26,7 @@ export interface Logo {
   wikipediaUrl?: string;
   sourceUrl?: string;
   license?: string;
+  contributorName?: string;
 }
 
 export interface Category {

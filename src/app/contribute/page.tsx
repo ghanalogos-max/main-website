@@ -1,62 +1,46 @@
-"use client";
-
-import { useState } from "react";
 import Link from "next/link";
+import ContributeForm from "@/components/ContributeForm";
 import {
-  UploadIcon,
-  CheckIcon,
-  LoadingIcon,
-  VectorIcon,
-  ShieldIcon,
+  ChartIcon,
   HeartIcon,
+  PhoneIcon,
+  ShieldIcon,
+  UploadIcon,
+  VectorIcon,
 } from "@/components/icons";
+import { CONTRIBUTOR_SHARE } from "@/lib/contributors";
+import { getSessionAccount } from "@/lib/developer";
+import { storeEnabled } from "@/lib/store";
+
+export const dynamic = "force-dynamic";
 
 const STEPS = [
   { icon: VectorIcon, text: "SVG preferred — official artwork from the brand's website or guidelines." },
   { icon: ShieldIcon, text: "Our team verifies every submission before it goes live." },
   { icon: HeartIcon, text: "Contributors are credited on the logo page." },
+  {
+    icon: ChartIcon,
+    text: `Earn from downloads: ${CONTRIBUTOR_SHARE * 100}% of Premium revenue is shared among contributors every month.`,
+  },
 ];
 
-export default function ContributePage() {
-  const [status, setStatus] = useState<"idle" | "submitting" | "done">("idle");
-  const [fileName, setFileName] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+function Gate({ title, text, href, cta }: { title: string; text: string; href: string; cta: string }) {
+  return (
+    <div className="panel flex flex-col items-center p-8 text-center">
+      <span className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-gh-green/10 text-gh-green dark:bg-gh-gold/10 dark:text-gh-gold">
+        <PhoneIcon size={24} />
+      </span>
+      <h2 className="font-display text-xl font-bold">{title}</h2>
+      <p className="mt-2 text-sm text-gh-black/60 dark:text-white/50">{text}</p>
+      <Link href={href} className="btn-primary mt-6">
+        {cta}
+      </Link>
+    </div>
+  );
+}
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setStatus("submitting");
-    setError(null);
-    try {
-      const res = await fetch("/api/submit", {
-        method: "POST",
-        body: new FormData(e.currentTarget),
-      });
-      const data = (await res.json().catch(() => ({}))) as { error?: string };
-      if (!res.ok) throw new Error(data.error || "Something went wrong. Please try again.");
-      setStatus("done");
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
-      setStatus("idle");
-    }
-  }
-
-  if (status === "done") {
-    return (
-      <div className="mx-auto max-w-md px-4 py-24 text-center">
-        <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-gh-green/10 text-gh-green">
-          <CheckIcon size={28} />
-        </div>
-        <h1 className="font-display text-2xl font-bold">Thank you! 🇬🇭</h1>
-        <p className="mt-2 text-gh-black/60 dark:text-white/50">
-          Your logo submission has been received and will be reviewed before
-          being published.
-        </p>
-        <Link href="/" className="btn-dark mt-6">
-          Back to the library
-        </Link>
-      </div>
-    );
-  }
+export default async function ContributePage() {
+  const account = storeEnabled ? await getSessionAccount() : null;
 
   return (
     <div className="mx-auto grid max-w-5xl gap-10 px-4 py-14 md:grid-cols-[1fr_1.2fr]">
@@ -69,8 +53,11 @@ export default function ContributePage() {
           Help grow Ghana&apos;s logo library
         </h1>
         <p className="mt-3 text-gh-black/60 dark:text-white/50">
-          Know a Ghanaian brand that&apos;s missing? Submit its logo and we&apos;ll
-          add it for everyone.
+          Know a Ghanaian brand that&apos;s missing? Submit its logo, we&apos;ll add it for
+          everyone, and you earn when it&apos;s downloaded.{" "}
+          <Link href="/contributors" className="font-semibold text-gh-green underline-offset-2 hover:underline dark:text-gh-gold">
+            How earnings work
+          </Link>
         </p>
         <ul className="mt-8 space-y-4">
           {STEPS.map(({ icon: Icon, text }) => (
@@ -84,56 +71,30 @@ export default function ContributePage() {
         </ul>
       </div>
 
-      <form onSubmit={handleSubmit} className="panel flex flex-col gap-4 p-6">
-        <div>
-          <label className="mb-1.5 block text-sm font-medium">Company name</label>
-          <input required name="companyName" maxLength={120} type="text" className="input" placeholder="e.g. Ghana Commercial Bank" />
-        </div>
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div>
-            <label className="mb-1.5 block text-sm font-medium">Your name</label>
-            <input required name="submitterName" maxLength={100} type="text" className="input" />
-          </div>
-          <div>
-            <label className="mb-1.5 block text-sm font-medium">Email</label>
-            <input required name="submitterEmail" maxLength={200} type="email" className="input" />
-          </div>
-        </div>
-        <div>
-          <label className="mb-1.5 block text-sm font-medium">
-            Source link <span className="font-normal text-gh-black/40 dark:text-white/40">(optional)</span>
-          </label>
-          <input name="sourceUrl" maxLength={500} type="url" className="input" placeholder="https://brand-website.com.gh/press" />
-        </div>
-        <label className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-gh-black/15 px-4 py-8 text-center transition-colors hover:border-gh-green dark:border-white/15">
-          <UploadIcon size={26} className="text-gh-green dark:text-gh-gold" />
-          <span className="text-sm font-semibold">
-            {fileName ?? "Upload logo file"}
-          </span>
-          <span className="text-xs text-gh-black/50 dark:text-white/40">SVG or PNG, up to 5MB</span>
-          <input
-            required
-            name="file"
-            type="file"
-            accept=".svg,.png"
-            className="sr-only"
-            onChange={(e) => setFileName(e.target.files?.[0]?.name ?? null)}
-          />
-        </label>
-        {error && (
-          <p role="alert" className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-600 dark:text-red-400">
-            {error}
-          </p>
-        )}
-        <button type="submit" disabled={status === "submitting"} className="btn-primary mt-1">
-          {status === "submitting" ? (
-            <LoadingIcon size={16} className="animate-spin" />
-          ) : (
-            <UploadIcon size={16} />
-          )}
-          {status === "submitting" ? "Submitting..." : "Submit logo"}
-        </button>
-      </form>
+      {!storeEnabled ? (
+        <Gate
+          title="Submissions are coming soon"
+          text="Accounts aren't available yet. Please try again later."
+          href="/"
+          cta="Back to the library"
+        />
+      ) : !account ? (
+        <Gate
+          title="Sign in to submit a logo"
+          text="Contributors need a free account so we can credit you and pay your earnings."
+          href="/login?next=%2Fcontribute"
+          cta="Sign in or create an account"
+        />
+      ) : !account.payout ? (
+        <Gate
+          title="Add your Mobile Money number"
+          text="We pay contributor earnings by Mobile Money. Add your number once, then submit as many logos as you like."
+          href="/contributors/dashboard"
+          cta="Add payout details"
+        />
+      ) : (
+        <ContributeForm name={account.name} />
+      )}
     </div>
   );
 }

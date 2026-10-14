@@ -4,7 +4,7 @@ const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.ghanalogos.com
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: [{ userAgent: "*", allow: "/", disallow: ["/api/", "/developers/dashboard", "/studio"] }],
+    rules: [{ userAgent: "*", allow: "/", disallow: ["/api/", "/developers/dashboard", "/contributors/dashboard", "/studio"] }],
     sitemap: `${siteUrl}/sitemap.xml`,
     host: siteUrl,
   };

@@ -36,7 +36,8 @@ const logosQuery = `*[_type == "logo"] | order(featured desc, name asc) {
   description,
   sourceUrl,
   wikipediaUrl,
-  license
+  license,
+  contributorName
 }`;
 
 const categoriesQuery = `*[_type == "category"] | order(order asc) {

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { FREE_DAILY_LIMIT } from "@/lib/plans";
+import { CONTRIBUTOR_SHARE, PAYOUT_MINIMUM_GHS } from "@/lib/contributors";
 import { PARENT_COMPANY, PARENT_URL } from "@/lib/seo";
 
 export const metadata: Metadata = {
@@ -78,6 +79,39 @@ export default function TermsPage() {
             secret and must not resell the logo dataset or use the API to
             build a competing logo library. We may suspend keys that abuse the
             service.
+          </p>
+        </section>
+        <section id="contributors">
+          <h2 className="mb-2 font-display text-lg font-bold text-gh-black dark:text-white">
+            Contributor programme
+          </h2>
+          <p>
+            Signed-in contributors may submit official logos of Ghanaian
+            organisations. You must only submit the brand&apos;s own artwork,
+            not altered or invented logos, and you confirm you obtained it from
+            a public, official source. Submitting a logo does not transfer any
+            ownership of it; the logo remains the trademark of its owner, and
+            you grant {PARENT_COMPANY} permission to publish the file you
+            uploaded.
+          </p>
+          <p className="mt-3">
+            Each month, {CONTRIBUTOR_SHARE * 100}% of that month&apos;s Premium
+            revenue (after refunds) forms the contributor pool. Each
+            contributor receives a share of the pool equal to their approved
+            logos&apos; share of website downloads that month, counted once
+            per visitor, per logo, per day. Developer API downloads and your
+            own downloads do not count. Earnings are paid by Mobile Money to
+            the wallet on your account by the 10th of the following month once
+            your unpaid balance reaches GHS {PAYOUT_MINIMUM_GHS}. You are
+            responsible for any tax on your earnings.
+          </p>
+          <p className="mt-3">
+            We may reject any submission, remove a logo (for example at the
+            brand owner&apos;s request, after which it stops earning), and
+            withhold earnings or close accounts involving fake or automated
+            downloads, multiple accounts or copied work. We may change the
+            programme&apos;s share or rules with 30 days&apos; notice; earnings
+            for completed months are not affected.
           </p>
         </section>
         <section>

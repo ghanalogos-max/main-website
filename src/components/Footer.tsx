@@ -11,6 +11,7 @@ const RESOURCES = [
   { href: "/developers", label: "Developer API" },
   { href: "/developers/docs", label: "API documentation" },
   { href: "/contribute", label: "Submit a logo" },
+  { href: "/contributors", label: "Earn as a contributor" },
 ];
 
 const COMPANY = [

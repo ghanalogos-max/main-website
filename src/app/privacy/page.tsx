@@ -21,6 +21,10 @@ const SECTIONS = [
     body: "When you create an account we store your name, email, phone number, organisation, plan, payment references and monthly API request counts. We verify your email address and phone number with one-time codes sent through our email and SMS providers. Passwords are stored only as salted one-way hashes. If you continue with Google or GitHub, we receive your name, verified email address and account ID from that provider — nothing else, and we never post on your behalf. API keys are also stored only as one-way hashes, so we can't recover a lost key — revoke it and create a new one.",
   },
   {
+    title: "Contributors",
+    body: "If you join the contributor programme we also store your Mobile Money network, number and wallet name to pay your earnings, the logos you submit, and daily download counts for your approved logos. To count each download once per visitor per day, we briefly keep the downloader's IP address for about a day. Your name is shown publicly on logos you contributed; your email address and Mobile Money number are never published.",
+  },
+  {
     title: "Cookies",
     body: "We use essential cookies for your download quota, Premium status, keeping you signed in, a short-lived one while you sign in with Google or GitHub, and a local setting for light/dark mode. We also use Google Analytics to understand which pages and logos are popular; it sets its own cookies and collects anonymous usage data such as pages visited, device type and approximate location. You can opt out with Google's Analytics opt-out browser add-on. We do not use advertising cookies.",
   },

@@ -29,8 +29,10 @@ export const submissionsEnabled = Boolean(writeClient);
 
 export interface SubmissionInput {
   companyName: string;
+  contributorId: string;
   submitterName: string;
   submitterEmail: string;
+  submitterPhone?: string;
   sourceUrl?: string;
   file: File;
 }
@@ -51,6 +53,7 @@ export async function createSubmission(input: SubmissionInput) {
       _id: id,
       _type: "submission",
       companyName: input.companyName,
+      contributorId: input.contributorId,
       submitterName: input.submitterName,
       sourceUrl: input.sourceUrl,
       file: { _type: "file", asset: { _type: "reference", _ref: asset._id } },
@@ -61,12 +64,35 @@ export async function createSubmission(input: SubmissionInput) {
       _id: privateContactId(id),
       _type: "submissionContact",
       email: input.submitterEmail,
+      phone: input.submitterPhone,
     })
     .commit();
 }
 
 export function privateContactId(submissionId: string): string {
   return `private.${submissionId.replace(/^drafts\./, "")}`;
+}
+
+export interface ContributorSubmission {
+  _id: string;
+  companyName: string;
+  status: "pending" | "approved" | "rejected";
+  submittedAt: string;
+  logoSlug?: string;
+  logoDownloads?: number;
+}
+
+/** Uses the token client so new submissions show up without CDN delay. */
+export async function submissionsFor(contributorId: string): Promise<ContributorSubmission[]> {
+  if (!writeClient) return [];
+  return writeClient.fetch<ContributorSubmission[]>(
+    `*[_type == "submission" && contributorId == $id && !(_id in path("drafts.**"))]
+      | order(submittedAt desc) [0...100] {
+        _id, companyName, "status": coalesce(status, "pending"), submittedAt,
+        "logoSlug": logo->slug.current, "logoDownloads": logo->downloadCount
+      }`,
+    { id: contributorId }
+  );
 }
 
 export function incrementDownloadCount(id: string | undefined) {

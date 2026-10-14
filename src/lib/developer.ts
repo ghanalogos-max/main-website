@@ -95,6 +95,19 @@ export interface DevAccount {
   createdAt: number;
   keys: ApiKeyRecord[];
   payments: Payment[];
+  /** Where contributor earnings are sent. */
+  payout?: PayoutDetails;
+}
+
+export type MomoNetwork = "mtn" | "telecel" | "at";
+
+export interface PayoutDetails {
+  network: MomoNetwork;
+  /** International digits without "+", e.g. 233241234567. */
+  number: string;
+  /** Name registered on the Mobile Money wallet. */
+  accountName: string;
+  updatedAt: number;
 }
 
 export type Provider = "github" | "google";
@@ -320,6 +333,10 @@ export function endSession() {
 /** Cheap check for the header — doesn't touch storage. */
 export function sessionName(): string | null {
   return unseal<Session>(cookies().get(SESSION_COOKIE)?.value)?.n ?? null;
+}
+
+export function sessionAccountId(): string | null {
+  return unseal<Session>(cookies().get(SESSION_COOKIE)?.value)?.id ?? null;
 }
 
 export async function getSessionAccount(): Promise<DevAccount | null> {

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { EMAIL, clientIp } from "@/lib/auth";
+import { clientIp } from "@/lib/auth";
+import { getSessionAccount } from "@/lib/developer";
 import { createSubmission, submissionsEnabled } from "@/lib/sanity.client";
 import { kv, storeEnabled } from "@/lib/store";
 
@@ -18,15 +19,22 @@ function fail(error: string, status = 400) {
 }
 
 export async function POST(req: NextRequest) {
-  if (!submissionsEnabled) {
+  if (!submissionsEnabled || !storeEnabled) {
     return fail("Submissions aren't available right now. Please try again later.", 503);
   }
 
-  if (storeEnabled) {
-    const hour = Math.floor(Date.now() / 3_600_000);
-    if ((await kv.incr(`gl:submit:${clientIp(req)}:${hour}`, 3600)) > 10) {
-      return fail("Too many submissions. Please try again in an hour.", 429);
-    }
+  const account = await getSessionAccount();
+  if (!account) return fail("Please sign in to submit a logo.", 401);
+  if (!account.payout) {
+    return fail("Add your Mobile Money details on your contributor dashboard first.", 403);
+  }
+
+  const hour = Math.floor(Date.now() / 3_600_000);
+  if (
+    (await kv.incr(`gl:submit:${clientIp(req)}:${hour}`, 3600)) > 10 ||
+    (await kv.incr(`gl:submit:a:${account.id}:${hour}`, 3600)) > 10
+  ) {
+    return fail("Too many submissions. Please try again in an hour.", 429);
   }
 
   let form: FormData;
@@ -37,14 +45,10 @@ export async function POST(req: NextRequest) {
   }
 
   const companyName = text(form, "companyName", 120);
-  const submitterName = text(form, "submitterName", 100);
-  const submitterEmail = text(form, "submitterEmail", 200).toLowerCase();
   const sourceUrl = text(form, "sourceUrl", 500);
   const file = form.get("file");
 
   if (!companyName) return fail("Enter the company name.");
-  if (!submitterName) return fail("Enter your name.");
-  if (!EMAIL.test(submitterEmail)) return fail("Enter a valid email address.");
   if (sourceUrl && !/^https?:\/\/\S+$/i.test(sourceUrl)) {
     return fail("The source link must start with http:// or https://.");
   }
@@ -55,8 +59,10 @@ export async function POST(req: NextRequest) {
   try {
     await createSubmission({
       companyName,
-      submitterName,
-      submitterEmail,
+      contributorId: account.id,
+      submitterName: account.name,
+      submitterEmail: account.email,
+      submitterPhone: account.payout.number,
       sourceUrl: sourceUrl || undefined,
       file,
     });

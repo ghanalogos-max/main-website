@@ -85,6 +85,19 @@ export default defineType({
       description: "Where this logo was sourced from, for verification",
     }),
     defineField({
+      name: "contributorName",
+      title: "Contributed by",
+      type: "string",
+      readOnly: true,
+    }),
+    defineField({
+      name: "contributorId",
+      title: "Contributor Account ID",
+      type: "string",
+      readOnly: true,
+      description: "Receives this logo's share of contributor earnings",
+    }),
+    defineField({
       name: "featured",
       title: "Featured",
       type: "boolean",

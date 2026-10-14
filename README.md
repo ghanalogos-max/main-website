@@ -113,6 +113,20 @@ live under `/api/auth/*` (`src/lib/auth.ts`, `src/lib/developer.ts`).
   production email sign-up and password reset stay disabled until both are
   set (receipt and provider sign-in still work).
 
+## Contributor programme
+
+- Signed-in users add Mobile Money details at `/contributors/dashboard`, then
+  submit logos at `/contribute`. Submissions land in Sanity as pending; the
+  **Approve & publish** action in Studio creates the logo and links it to the
+  contributor (`contributorId`).
+- Each month 50% of Premium revenue forms a pool, split by each contributor's
+  share of website downloads (once per visitor, per logo, per day; API and own
+  downloads excluded). Counters live in Redis under `gl:pool:*`. Settings are
+  in `src/lib/contributors.ts`.
+- Paying out: copy `KV_REST_API_URL`/`KV_REST_API_TOKEN` from Vercel into
+  `.env.local`, run `npm run payouts` for the CSV of balances of GHS 50 and up,
+  send the Mobile Money payments, then run `npm run payouts -- --mark-paid`.
+
 ## Getting started
 
 ```bash

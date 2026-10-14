@@ -7,6 +7,7 @@ const API_VERSION = "2024-01-01";
 
 interface Submission extends SanityDocument {
   companyName?: string;
+  contributorId?: string;
   submitterName?: string;
   sourceUrl?: string;
   status?: string;
@@ -106,6 +107,8 @@ export const ApproveSubmissionAction: DocumentActionComponent = (props) => {
           ...artwork,
           sourceUrl: doc?.sourceUrl || undefined,
           sourceNote: `Community submission from ${doc?.submitterName || "a contributor"}`,
+          contributorId: doc?.contributorId || undefined,
+          contributorName: doc?.contributorId ? doc?.submitterName : undefined,
           featured: false,
           downloadCount: 0,
         });
