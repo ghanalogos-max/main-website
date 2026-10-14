@@ -24,6 +24,35 @@ const writeClient =
       })
     : null;
 
+export const submissionsEnabled = Boolean(writeClient);
+
+export interface SubmissionInput {
+  companyName: string;
+  submitterName: string;
+  submitterEmail: string;
+  sourceUrl?: string;
+  file: File;
+}
+
+export async function createSubmission(input: SubmissionInput) {
+  if (!writeClient) throw new Error("Sanity write token is not configured.");
+  const asset = await writeClient.assets.upload(
+    "file",
+    Buffer.from(await input.file.arrayBuffer()),
+    { filename: input.file.name, contentType: input.file.type || undefined }
+  );
+  return writeClient.create({
+    _type: "submission",
+    companyName: input.companyName,
+    submitterName: input.submitterName,
+    submitterEmail: input.submitterEmail,
+    sourceUrl: input.sourceUrl,
+    file: { _type: "file", asset: { _type: "reference", _ref: asset._id } },
+    status: "pending",
+    submittedAt: new Date().toISOString(),
+  });
+}
+
 export function incrementDownloadCount(id: string | undefined) {
   if (!writeClient || !id) return;
   writeClient

@@ -133,7 +133,7 @@ Visit `http://localhost:3000`.
 | `NEXT_PUBLIC_PREMIUM_MONTHLY_GHS` | no | Default `50` |
 | `NEXT_PUBLIC_PREMIUM_YEARLY_GHS` | no | Default `400` |
 | `NEXT_PUBLIC_SANITY_PROJECT_ID` / `_DATASET` | for real logos | Sanity project |
-| `SANITY_API_TOKEN` | no | Enables per-logo download counters |
+| `SANITY_API_TOKEN` | for submissions | Editor token: saves logo submissions from `/contribute` and per-logo download counters |
 | `UPSTASH_REDIS_REST_URL` / `_TOKEN` | for the API | API accounts & keys; also per-IP daily limit |
 | `RESEND_API_KEY` / `EMAIL_FROM` | for sign-up | Verification and password-reset emails via Resend |
 | `ARKESEL_API_KEY` / `SMS_SENDER_ID` | for sign-up | Verification SMS via Arkesel |

@@ -20,13 +20,24 @@ const STEPS = [
 export default function ContributePage() {
   const [status, setStatus] = useState<"idle" | "submitting" | "done">("idle");
   const [fileName, setFileName] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus("submitting");
-    // TODO: wire this up to /api/submit once Sanity write token is configured.
-    await new Promise((r) => setTimeout(r, 800));
-    setStatus("done");
+    setError(null);
+    try {
+      const res = await fetch("/api/submit", {
+        method: "POST",
+        body: new FormData(e.currentTarget),
+      });
+      const data = (await res.json().catch(() => ({}))) as { error?: string };
+      if (!res.ok) throw new Error(data.error || "Something went wrong. Please try again.");
+      setStatus("done");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+      setStatus("idle");
+    }
   }
 
   if (status === "done") {
@@ -76,23 +87,23 @@ export default function ContributePage() {
       <form onSubmit={handleSubmit} className="panel flex flex-col gap-4 p-6">
         <div>
           <label className="mb-1.5 block text-sm font-medium">Company name</label>
-          <input required type="text" className="input" placeholder="e.g. Ghana Commercial Bank" />
+          <input required name="companyName" maxLength={120} type="text" className="input" placeholder="e.g. Ghana Commercial Bank" />
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
             <label className="mb-1.5 block text-sm font-medium">Your name</label>
-            <input required type="text" className="input" />
+            <input required name="submitterName" maxLength={100} type="text" className="input" />
           </div>
           <div>
             <label className="mb-1.5 block text-sm font-medium">Email</label>
-            <input required type="email" className="input" />
+            <input required name="submitterEmail" maxLength={200} type="email" className="input" />
           </div>
         </div>
         <div>
           <label className="mb-1.5 block text-sm font-medium">
             Source link <span className="font-normal text-gh-black/40 dark:text-white/40">(optional)</span>
           </label>
-          <input type="url" className="input" placeholder="https://brand-website.com.gh/press" />
+          <input name="sourceUrl" maxLength={500} type="url" className="input" placeholder="https://brand-website.com.gh/press" />
         </div>
         <label className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-gh-black/15 px-4 py-8 text-center transition-colors hover:border-gh-green dark:border-white/15">
           <UploadIcon size={26} className="text-gh-green dark:text-gh-gold" />
@@ -102,12 +113,18 @@ export default function ContributePage() {
           <span className="text-xs text-gh-black/50 dark:text-white/40">SVG or PNG, up to 5MB</span>
           <input
             required
+            name="file"
             type="file"
             accept=".svg,.png"
             className="sr-only"
             onChange={(e) => setFileName(e.target.files?.[0]?.name ?? null)}
           />
         </label>
+        {error && (
+          <p role="alert" className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-600 dark:text-red-400">
+            {error}
+          </p>
+        )}
         <button type="submit" disabled={status === "submitting"} className="btn-primary mt-1">
           {status === "submitting" ? (
             <LoadingIcon size={16} className="animate-spin" />
