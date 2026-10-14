@@ -39,8 +39,8 @@ export default function ContributeForm({ name }: { name: string }) {
           You can follow its status on your dashboard.
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
-          <Link href="/contributors/dashboard" className="btn-dark">
-            My dashboard
+          <Link href="/account?tab=contributions" className="btn-dark">
+            My contributions
           </Link>
           <button
             type="button"

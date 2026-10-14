@@ -39,7 +39,7 @@ export default function SignupForm({ providers, next }: { providers: Providers; 
     return () => clearTimeout(t);
   }, [cooldown]);
 
-  const nextQuery = next === "/developers/dashboard" ? "" : `?next=${encodeURIComponent(next)}`;
+  const nextQuery = next === "/account" ? "" : `?next=${encodeURIComponent(next)}`;
 
   async function sendCodes() {
     const data = await postJson<Started>("/api/auth/signup/start", {

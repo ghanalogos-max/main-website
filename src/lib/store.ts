@@ -80,38 +80,16 @@ export const kv = {
   },
 
   /** Sets the key only if it doesn't exist. Returns true when it was set. */
-  async setIfAbsent(key: string, value: unknown, ttlSeconds?: number): Promise<boolean> {
+  async setIfAbsent(key: string, value: unknown): Promise<boolean> {
     assertEnabled();
     const raw = JSON.stringify(value);
     if (!redisEnabled) {
       if (memoryGet(key) !== null) return false;
-      memorySet(key, raw, ttlSeconds);
+      memorySet(key, raw);
       return true;
     }
-    const [result] = await redis([
-      ttlSeconds ? ["SET", key, raw, "NX", "EX", ttlSeconds] : ["SET", key, raw, "NX"],
-    ]);
+    const [result] = await redis([["SET", key, raw, "NX"]]);
     return result === "OK";
-  },
-
-  /** Adds to a counter that never expires. */
-  async incrBy(key: string, amount: number): Promise<number> {
-    assertEnabled();
-    if (!redisEnabled) {
-      const next = Number(memoryGet(key) ?? 0) + amount;
-      memorySet(key, String(next));
-      return next;
-    }
-    const [value] = await redis([["INCRBY", key, amount]]);
-    return Number(value);
-  },
-
-  async counts(keys: string[]): Promise<number[]> {
-    assertEnabled();
-    if (!keys.length) return [];
-    if (!redisEnabled) return keys.map((k) => Number(memoryGet(k) ?? 0));
-    const [values] = await redis([["MGET", ...keys]]);
-    return (values as (string | null)[]).map((v) => Number(v ?? 0));
   },
 
   async del(key: string): Promise<void> {

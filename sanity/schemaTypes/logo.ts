@@ -95,7 +95,7 @@ export default defineType({
       title: "Contributor Account ID",
       type: "string",
       readOnly: true,
-      description: "Receives this logo's share of contributor earnings",
+      description: "GhanaLogos account that submitted this logo",
     }),
     defineField({
       name: "featured",

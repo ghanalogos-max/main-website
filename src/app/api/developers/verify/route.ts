@@ -9,7 +9,8 @@ export async function GET(req: NextRequest) {
   const reference =
     req.nextUrl.searchParams.get("reference") ||
     req.nextUrl.searchParams.get("trxref");
-  const target = new URL("/developers/dashboard", req.nextUrl.origin);
+  const target = new URL("/account", req.nextUrl.origin);
+  target.searchParams.set("tab", "developer");
 
   if (!reference) {
     target.searchParams.set("status", "error");

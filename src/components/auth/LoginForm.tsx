@@ -33,7 +33,7 @@ export default function LoginForm({
   const [error, setError] = useState<string | null>(initialError);
   const [busy, setBusy] = useState(false);
 
-  const nextQuery = next === "/developers/dashboard" ? "" : `?next=${encodeURIComponent(next)}`;
+  const nextQuery = next === "/account" ? "" : `?next=${encodeURIComponent(next)}`;
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();

@@ -129,7 +129,7 @@ export default async function DocsPage() {
             The GhanaLogos API is a JSON REST API. All endpoints use{" "}
             <Code>GET</Code>, live under <Code>{BASE}</Code> and support CORS.
             Get a key from the{" "}
-            <Link href="/developers/dashboard" className="font-semibold text-gh-green underline dark:text-gh-gold">
+            <Link href="/account?tab=developer" className="font-semibold text-gh-green underline dark:text-gh-gold">
               developer dashboard
             </Link>
             .

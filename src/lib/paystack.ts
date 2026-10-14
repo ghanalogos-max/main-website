@@ -1,7 +1,5 @@
 import { PLANS, PlanId, isPlanId } from "./plans";
 import type { PremiumToken } from "./quota";
-import { recordPremiumRevenue } from "./contributors";
-
 const API = "https://api.paystack.co";
 
 export const paystackEnabled = Boolean(process.env.PAYSTACK_SECRET_KEY);
@@ -98,8 +96,6 @@ export async function premiumFromReference(
   if (tx.amount < Math.round(plan.priceGhs * 100)) {
     throw new Error("Payment amount does not match the selected plan.");
   }
-
-  await recordPremiumRevenue(tx.reference, tx.amount, tx.paid_at);
 
   const exp = new Date(tx.paid_at).getTime() + plan.days * 24 * 60 * 60 * 1000;
   if (exp < Date.now()) throw new Error("This Premium plan has expired.");

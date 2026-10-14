@@ -16,6 +16,9 @@ const nextConfig = {
         destination: "https://www.ghanalogos.com/:path*",
         permanent: true,
       },
+      // Query strings (e.g. ?status=success) are carried over by Next.js.
+      { source: "/developers/dashboard", destination: "/account?tab=developer", permanent: true },
+      { source: "/contributors/dashboard", destination: "/account?tab=contributions", permanent: true },
     ];
   },
   async headers() {

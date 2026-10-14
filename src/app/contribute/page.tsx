@@ -8,7 +8,7 @@ import {
   UploadIcon,
   VectorIcon,
 } from "@/components/icons";
-import { CONTRIBUTOR_SHARE } from "@/lib/contributors";
+import { REWARD_BATCH, REWARD_GHS } from "@/lib/contributors";
 import { getSessionAccount } from "@/lib/developer";
 import { storeEnabled } from "@/lib/store";
 
@@ -20,7 +20,7 @@ const STEPS = [
   { icon: HeartIcon, text: "Contributors are credited on the logo page." },
   {
     icon: ChartIcon,
-    text: `Earn from downloads: ${CONTRIBUTOR_SHARE * 100}% of Premium revenue is shared among contributors every month.`,
+    text: `Earn GHS ${REWARD_GHS} by Mobile Money for every ${REWARD_BATCH} logos we approve.`,
   },
 ];
 
@@ -53,10 +53,10 @@ export default async function ContributePage() {
           Help grow Ghana&apos;s logo library
         </h1>
         <p className="mt-3 text-gh-black/60 dark:text-white/50">
-          Know a Ghanaian brand that&apos;s missing? Submit its logo, we&apos;ll add it for
-          everyone, and you earn when it&apos;s downloaded.{" "}
+          Know a Ghanaian brand that&apos;s missing? Submit its official logo, we&apos;ll add it
+          for everyone, and you&apos;re rewarded for the work.{" "}
           <Link href="/contributors" className="font-semibold text-gh-green underline-offset-2 hover:underline dark:text-gh-gold">
-            How earnings work
+            How rewards work
           </Link>
         </p>
         <ul className="mt-8 space-y-4">
@@ -81,16 +81,16 @@ export default async function ContributePage() {
       ) : !account ? (
         <Gate
           title="Sign in to submit a logo"
-          text="Contributors need a free account so we can credit you and pay your earnings."
+          text="Contributors need a free account so we can credit you and pay your rewards."
           href="/login?next=%2Fcontribute"
           cta="Sign in or create an account"
         />
-      ) : !account.payout ? (
+      ) : !account.phoneVerifiedAt || !account.payout ? (
         <Gate
-          title="Add your Mobile Money number"
-          text="We pay contributor earnings by Mobile Money. Add your number once, then submit as many logos as you like."
-          href="/contributors/dashboard"
-          cta="Add payout details"
+          title="Set up your Mobile Money wallet"
+          text="Rewards are paid by Mobile Money to your verified phone number. Verify it and confirm your wallet once, then submit as many logos as you like."
+          href="/account?tab=contributions"
+          cta="Set up payouts"
         />
       ) : (
         <ContributeForm name={account.name} />

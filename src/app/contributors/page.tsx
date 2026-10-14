@@ -2,21 +2,19 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import {
   ChartIcon,
-  DownloadIcon,
   PhoneIcon,
   ShieldIcon,
   UploadIcon,
   UserIcon,
 } from "@/components/icons";
-import { CONTRIBUTOR_SHARE, PAYOUT_MINIMUM_GHS } from "@/lib/contributors";
-import { PLANS } from "@/lib/plans";
+import { PAYOUT_MINIMUM_GHS, REWARD_BATCH, REWARD_GHS } from "@/lib/contributors";
 import { sessionName } from "@/lib/developer";
 
-const SHARE = `${CONTRIBUTOR_SHARE * 100}%`;
+const REWARD = `GHS ${REWARD_GHS}`;
 
 export const metadata: Metadata = {
-  title: "Contributor Programme — Earn From Your Logo Submissions",
-  description: `Submit official Ghanaian brand logos to GhanaLogos and earn ${SHARE} of Premium revenue, shared by downloads. Paid monthly by Mobile Money.`,
+  title: "Contributor Programme — Get Rewarded for Adding Logos",
+  description: `Find and submit official Ghanaian brand logos to GhanaLogos and earn ${REWARD} for every ${REWARD_BATCH} approved logos, paid by Mobile Money.`,
   alternates: { canonical: "/contributors" },
 };
 
@@ -24,12 +22,12 @@ const STEPS = [
   {
     icon: UserIcon,
     title: "Create an account",
-    text: "Sign up with your email, Google or GitHub and add your Mobile Money number.",
+    text: "Sign up free and verify the phone number on your Mobile Money wallet.",
   },
   {
     icon: UploadIcon,
     title: "Submit official logos",
-    text: "Upload SVG or PNG artwork from the brand's own website or guidelines.",
+    text: "Find the brand's own SVG or PNG artwork from its website or guidelines.",
   },
   {
     icon: ShieldIcon,
@@ -37,40 +35,40 @@ const STEPS = [
     text: "Our team checks every logo. Approved logos go live with your name on them.",
   },
   {
-    icon: DownloadIcon,
-    title: "Earn from downloads",
-    text: `Every month, ${SHARE} of Premium revenue is shared among contributors by downloads.`,
+    icon: PhoneIcon,
+    title: "Get rewarded",
+    text: `Every ${REWARD_BATCH} approved logos earns you ${REWARD}, sent by Mobile Money.`,
   },
 ];
 
 const FAQ = [
   {
-    q: "How are earnings calculated?",
-    a: `Each month, ${SHARE} of that month's Premium revenue goes into the contributor pool. You receive the part of the pool that matches your logos' share of all downloads on the website. If your logos made 2% of all downloads, you get 2% of the pool.`,
+    q: "How much do I earn?",
+    a: `${REWARD} for every ${REWARD_BATCH} logos we approve. Your dashboard shows how many more approved logos you need for the next reward. Pending and rejected submissions don't count.`,
+  },
+  {
+    q: "What am I being paid for?",
+    a: "For your work finding, checking and preparing the official artwork. It's a fixed reward per batch of approved logos and doesn't depend on how often a logo is downloaded.",
+  },
+  {
+    q: "When and how do I get paid?",
+    a: `By Mobile Money (MTN MoMo, Telecel Cash or AT Money) to the verified phone number on your account. Once your unpaid rewards reach GHS ${PAYOUT_MINIMUM_GHS}, they're paid by the 10th of the following month.`,
   },
   {
     q: "Is there a fee to join?",
-    a: "No. The programme is free. You only need a GhanaLogos account and a Mobile Money wallet in your name.",
-  },
-  {
-    q: "When do I get paid?",
-    a: `Earnings are finalised at the end of each month and paid by Mobile Money (MTN MoMo, Telecel Cash or AT Money) by the 10th of the next month, once your unpaid balance reaches GHS ${PAYOUT_MINIMUM_GHS}. Smaller balances carry over.`,
-  },
-  {
-    q: "Which downloads count?",
-    a: "Downloads from the GhanaLogos website count, whether the visitor is on the free plan or Premium. Each visitor counts once per logo per day. Downloads through the Developer API and downloads of your own logos while signed in don't count.",
+    a: "No. You only need a free GhanaLogos account and a Mobile Money wallet registered to your verified phone number.",
   },
   {
     q: "What logos can I submit?",
-    a: "Official logos of Ghanaian companies, organisations and institutions that aren't already in the library. Use the brand's own artwork; don't redraw, edit or upload a logo you made up. Duplicates of existing logos aren't accepted.",
+    a: "Official logos of Ghanaian companies, organisations and institutions that aren't already in the library. Use the brand's own artwork; don't redraw, edit or invent a logo. Duplicates of existing logos aren't accepted.",
   },
   {
     q: "Do I own the logo once it's approved?",
-    a: "No. Logos remain the trademarks of their owners. You're rewarded for finding and preparing the official artwork, not for owning it. If a brand owner asks us to remove a logo, it stops earning.",
+    a: "No. Logos remain the trademarks of their owners. If a brand owner asks us to remove a logo, we will — rewards you've already been paid aren't affected.",
   },
   {
     q: "What happens if someone cheats?",
-    a: "Fake downloads, bots, stolen or altered artwork, or several accounts per person lead to the earnings being withheld and the account being removed from the programme.",
+    a: "Altered or invented logos, artwork copied from other logo sites without checking it's official, or several accounts per person lead to rewards being withheld and the account being removed from the programme.",
   },
 ];
 
@@ -85,12 +83,12 @@ export default function ContributorsPage() {
           Contributor programme
         </span>
         <h1 className="mt-5 font-display text-3xl font-extrabold tracking-tight md:text-5xl">
-          Earn {SHARE} of Premium revenue from the logos you add
+          Get rewarded for growing Ghana&apos;s logo library
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-gh-black/60 dark:text-white/50">
-          Help build Ghana&apos;s logo library. When your approved logos are downloaded,
-          you earn a share of every month&apos;s Premium sales, paid straight to your
-          Mobile Money wallet.
+          Find official logos of Ghanaian brands that are missing from GhanaLogos. For every{" "}
+          {REWARD_BATCH} we approve, we send {REWARD} to your Mobile Money wallet, and your
+          name appears on each logo.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           {signedIn ? (
@@ -99,16 +97,16 @@ export default function ContributorsPage() {
                 <UploadIcon size={16} />
                 Submit a logo
               </Link>
-              <Link href="/contributors/dashboard" className="btn-dark">
-                My earnings
+              <Link href="/account?tab=contributions" className="btn-dark">
+                My contributions
               </Link>
             </>
           ) : (
             <>
-              <Link href="/signup?next=%2Fcontributors%2Fdashboard" className="btn-primary">
+              <Link href="/signup?next=%2Faccount%3Ftab%3Dcontributions" className="btn-primary">
                 Join for free
               </Link>
-              <Link href="/login?next=%2Fcontributors%2Fdashboard" className="btn-dark">
+              <Link href="/login?next=%2Faccount%3Ftab%3Dcontributions" className="btn-dark">
                 Sign in
               </Link>
             </>
@@ -128,31 +126,6 @@ export default function ContributorsPage() {
             <p className="mt-1.5 text-sm text-gh-black/60 dark:text-white/50">{text}</p>
           </div>
         ))}
-      </section>
-
-      <section className="panel mx-auto mt-12 max-w-3xl p-6">
-        <h2 className="font-display text-xl font-bold">An example month</h2>
-        <p className="mt-2 text-sm text-gh-black/60 dark:text-white/50">
-          These numbers are only an illustration. Real earnings depend on Premium sales
-          and downloads.
-        </p>
-        <dl className="mt-5 grid gap-3 text-sm sm:grid-cols-2">
-          {[
-            ["Premium sales that month", `100 × GHS ${PLANS.monthly.priceGhs} = GHS ${100 * PLANS.monthly.priceGhs}`],
-            ["Contributor pool (" + SHARE + ")", `GHS ${100 * PLANS.monthly.priceGhs * CONTRIBUTOR_SHARE}`],
-            ["Your logos' downloads", "1,500 of 30,000 (5%)"],
-            ["You earn", `GHS ${100 * PLANS.monthly.priceGhs * CONTRIBUTOR_SHARE * 0.05}`],
-          ].map(([label, value]) => (
-            <div key={label} className="rounded-xl bg-gh-black/[0.03] px-4 py-3 dark:bg-white/5">
-              <dt className="text-gh-black/50 dark:text-white/40">{label}</dt>
-              <dd className="mt-0.5 font-semibold">{value}</dd>
-            </div>
-          ))}
-        </dl>
-        <p className="mt-4 flex items-start gap-2 text-sm text-gh-black/60 dark:text-white/50">
-          <PhoneIcon size={16} className="mt-0.5 shrink-0" />
-          Paid monthly by Mobile Money once your balance reaches GHS {PAYOUT_MINIMUM_GHS}.
-        </p>
       </section>
 
       <section className="mx-auto mt-16 max-w-3xl">

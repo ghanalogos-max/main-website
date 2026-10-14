@@ -21,6 +21,8 @@ export async function POST(req: NextRequest) {
     });
     if (payload.accountId !== account.id) throw new AuthError("This code belongs to another account.", 403);
 
+    // Wallet network and name belong to the old number; confirm them again.
+    if (account.phone !== payload.phone) delete account.payout;
     account.phone = payload.phone;
     account.phoneVerifiedAt = Date.now();
     await saveAccount(account);

@@ -15,13 +15,9 @@ import {
   CheckIcon,
   CopyIcon,
   DeleteIcon,
-  ExitIcon,
-  GithubIcon,
-  GoogleIcon,
   InfoIcon,
   KeyIcon,
   LoadingIcon,
-  LockIcon,
   PhoneIcon,
 } from "./icons";
 
@@ -38,138 +34,6 @@ async function call<T>(url: string, init?: RequestInit): Promise<T> {
   const data = await res.json().catch(() => ({}));
   if (!res.ok) throw new Error(data.error || "Something went wrong.");
   return data as T;
-}
-
-function PhoneVerification({
-  current,
-  onVerified,
-}: {
-  current: string | null;
-  onVerified: (a: AccountSummary) => void;
-}) {
-  const [phone, setPhone] = useState(current ?? "");
-  const [pending, setPending] = useState<{ token: string; phone: string; devCode?: string } | null>(
-    null
-  );
-  const [code, setCode] = useState("");
-  const [cooldown, setCooldown] = useState(0);
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (cooldown <= 0) return;
-    const t = setTimeout(() => setCooldown((c) => c - 1), 1000);
-    return () => clearTimeout(t);
-  }, [cooldown]);
-
-  async function send(e?: React.FormEvent) {
-    e?.preventDefault();
-    setBusy(true);
-    setError(null);
-    try {
-      setPending(
-        await call("/api/auth/phone/start", { method: "POST", body: JSON.stringify({ phone }) })
-      );
-      setCode("");
-      setCooldown(60);
-    } catch (err) {
-      setError((err as Error).message);
-    } finally {
-      setBusy(false);
-    }
-  }
-
-  async function confirmCode(e: React.FormEvent) {
-    e.preventDefault();
-    if (!pending) return;
-    setBusy(true);
-    setError(null);
-    try {
-      onVerified(
-        await call<AccountSummary>("/api/auth/phone/confirm", {
-          method: "POST",
-          body: JSON.stringify({ token: pending.token, code }),
-        })
-      );
-    } catch (err) {
-      setError((err as Error).message);
-      setBusy(false);
-    }
-  }
-
-  return (
-    <section className="mt-6 rounded-2xl border border-gh-gold/50 bg-gh-gold/10 p-6">
-      <h2 className="flex items-center gap-2 font-display text-lg font-bold">
-        <PhoneIcon size={20} />
-        Verify your phone number
-      </h2>
-      <p className="mt-1 text-sm text-gh-black/70 dark:text-white/60">
-        You need a verified phone number to create API keys and buy plans. We&apos;ll send a 6-digit
-        code by SMS.
-      </p>
-      {error && <p className="mt-3 text-sm font-medium text-gh-red">{error}</p>}
-      {pending ? (
-        <form onSubmit={confirmCode} className="mt-4 grid gap-3 sm:max-w-md">
-          <p className="text-sm">
-            Code sent to <strong>{pending.phone}</strong>.
-          </p>
-          {pending.devCode && (
-            <p className="font-mono text-xs">Test mode (no SMS provider configured): {pending.devCode}</p>
-          )}
-          <div className="flex gap-2">
-            <input
-              required
-              inputMode="numeric"
-              autoComplete="one-time-code"
-              pattern="\d{6}"
-              maxLength={6}
-              value={code}
-              onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
-              placeholder="123456"
-              className="input flex-1 text-center font-mono tracking-[0.4em]"
-            />
-            <button type="submit" disabled={busy} className="btn-primary">
-              {busy && <LoadingIcon size={16} className="animate-spin" />}
-              Verify
-            </button>
-          </div>
-          <div className="flex justify-between text-sm">
-            <button
-              type="button"
-              onClick={() => setPending(null)}
-              className="font-medium text-gh-black/60 hover:text-gh-black dark:text-white/60 dark:hover:text-white"
-            >
-              Change number
-            </button>
-            <button
-              type="button"
-              onClick={() => send()}
-              disabled={busy || cooldown > 0}
-              className="font-semibold text-gh-green hover:underline disabled:text-gh-black/40 disabled:no-underline dark:text-gh-gold dark:disabled:text-white/40"
-            >
-              {cooldown > 0 ? `Resend in ${cooldown}s` : "Resend code"}
-            </button>
-          </div>
-        </form>
-      ) : (
-        <form onSubmit={send} className="mt-4 flex flex-col gap-2 sm:max-w-md sm:flex-row">
-          <input
-            required
-            type="tel"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            placeholder="024 123 4567"
-            autoComplete="tel"
-            className="input sm:flex-1"
-          />
-          <button type="submit" disabled={busy} className="btn-dark">
-            {busy && <LoadingIcon size={16} className="animate-spin" />}
-            Send code
-          </button>
-        </form>
-      )}
-    </section>
-  );
 }
 
 export default function DeveloperDashboard({
@@ -194,7 +58,7 @@ export default function DeveloperDashboard({
   const load = useCallback(async () => {
     const res = await fetch("/api/developers/account");
     if (res.status === 401) {
-      window.location.assign("/login?next=%2Fdevelopers%2Fdashboard");
+      window.location.assign("/login?next=%2Faccount%3Ftab%3Ddeveloper");
       return;
     }
     if (res.status === 503) setUnavailable(true);
@@ -259,11 +123,6 @@ export default function DeveloperDashboard({
     }
   }
 
-  async function signOut() {
-    await fetch("/api/auth/logout", { method: "POST" });
-    window.location.assign("/");
-  }
-
   async function copyKey() {
     if (!newKey) return;
     await navigator.clipboard.writeText(newKey);
@@ -309,65 +168,48 @@ export default function DeveloperDashboard({
 
   return (
     <div>
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <p className="text-sm text-gh-black/50 dark:text-white/40">Developer dashboard</p>
-          <h1 className="font-display text-3xl font-extrabold tracking-tight">
-            {account.organisation || account.name}
-          </h1>
-          <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-gh-black/60 dark:text-white/50">
-            {account.email}
-            {account.phone && <span>· {account.phone}</span>}
-            {account.emailVerified && account.phoneVerified && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-gh-green/10 px-2 py-0.5 text-xs font-semibold text-gh-green">
-                <CheckIcon size={12} />
-                Verified
-              </span>
-            )}
-          </p>
-        </div>
-        <button onClick={signOut} className="btn-outline">
-          <ExitIcon size={16} />
-          Sign out
-        </button>
-      </div>
-
       {status === "success" && (
-        <p className="mt-6 flex items-center gap-2 rounded-2xl border border-gh-green/30 bg-gh-green/10 p-4 text-sm font-medium text-gh-green">
+        <p className="mb-6 flex items-center gap-2 rounded-2xl border border-gh-green/30 bg-gh-green/10 p-4 text-sm font-medium text-gh-green">
           <CheckIcon size={18} />
           Payment confirmed — your {plan.name} plan is active.
           {account.keys.length === 0 && " Create your first API key below."}
         </p>
       )}
       {status === "error" && (
-        <p className="mt-6 rounded-2xl border border-gh-red/30 bg-gh-red/10 p-4 text-sm font-medium text-gh-red">
+        <p className="mb-6 rounded-2xl border border-gh-red/30 bg-gh-red/10 p-4 text-sm font-medium text-gh-red">
           {message ||
             "We couldn't confirm your payment. If you were charged, contact support with your Paystack reference."}
         </p>
       )}
       {!account.phoneVerified && (
-        <PhoneVerification current={account.phone} onVerified={setAccount} />
+        <p className="mb-6 flex flex-wrap items-center gap-2 rounded-2xl border border-gh-gold/50 bg-gh-gold/10 p-4 text-sm font-medium">
+          <PhoneIcon size={18} />
+          Verify your phone number to create API keys and buy plans.
+          <Link href="/account" className="font-semibold text-gh-green underline dark:text-gh-gold">
+            Verify now
+          </Link>
+        </p>
       )}
       {status === "welcome" && account.keys.length === 0 && (
-        <p className="mt-6 flex items-center gap-2 rounded-2xl border border-gh-green/30 bg-gh-green/10 p-4 text-sm font-medium text-gh-green">
+        <p className="mb-6 flex items-center gap-2 rounded-2xl border border-gh-green/30 bg-gh-green/10 p-4 text-sm font-medium text-gh-green">
           <CheckIcon size={18} />
           Your Sandbox account is ready. Create your first API key below.
         </p>
       )}
       {account.expired && (
-        <p className="mt-6 flex items-center gap-2 rounded-2xl border border-gh-gold/50 bg-gh-gold/15 p-4 text-sm font-medium">
+        <p className="mb-6 flex items-center gap-2 rounded-2xl border border-gh-gold/50 bg-gh-gold/15 p-4 text-sm font-medium">
           <InfoIcon size={18} />
           Your {API_PLANS[account.purchasedPlan].name} plan ended on{" "}
           {formatDate(account.expiresAt!)}. You&apos;re on Sandbox limits until you renew.
         </p>
       )}
       {error && (
-        <p className="mt-6 rounded-2xl border border-gh-red/30 bg-gh-red/10 p-4 text-sm font-medium text-gh-red">
+        <p className="mb-6 rounded-2xl border border-gh-red/30 bg-gh-red/10 p-4 text-sm font-medium text-gh-red">
           {error}
         </p>
       )}
 
-      <div className="mt-8 grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-3">
         <div className="panel p-5">
           <p className="text-xs font-bold uppercase tracking-[0.14em] text-gh-black/40 dark:text-white/40">Plan</p>
           <p className="mt-2 font-display text-2xl font-extrabold">{plan.name}</p>
@@ -516,16 +358,10 @@ export default function DeveloperDashboard({
             are rejected; requests from your own server always work, so keep the key secret.
           </p>
         </form>
-        {!account.phoneVerified ? (
+        {account.phoneVerified && !canCreate && (
           <p className="mt-2 text-xs text-gh-black/50 dark:text-white/40">
-            Verify your phone number above to create API keys.
+            You&apos;ve reached your plan&apos;s key limit. Revoke a key or upgrade below.
           </p>
-        ) : (
-          !canCreate && (
-            <p className="mt-2 text-xs text-gh-black/50 dark:text-white/40">
-              You&apos;ve reached your plan&apos;s key limit. Revoke a key or upgrade below.
-            </p>
-          )
         )}
       </section>
 
@@ -586,44 +422,6 @@ export default function DeveloperDashboard({
         <p className="mt-4 text-xs text-gh-black/50 dark:text-white/40">
           Paid to Celestial Web Solutions via Paystack. Renewing adds time to
           your current plan; switching plans starts the new plan immediately.
-          {!account.phoneVerified && " Verify your phone number above to buy a plan."}
-        </p>
-      </section>
-
-      <section className="panel mt-6 p-6">
-        <h2 className="font-display text-lg font-bold">Sign-in methods</h2>
-        <ul className="mt-4 divide-y divide-gh-black/5 text-sm dark:divide-white/5">
-          {[
-            { id: "password", label: "Email & password", Icon: LockIcon, on: account.signInMethods.password },
-            { id: "google", label: "Google", Icon: GoogleIcon, on: account.signInMethods.google },
-            { id: "github", label: "GitHub", Icon: GithubIcon, on: account.signInMethods.github },
-          ].map(({ id, label, Icon, on }) => (
-            <li key={id} className="flex flex-wrap items-center justify-between gap-2 py-3">
-              <span className="flex items-center gap-2 font-medium">
-                <Icon size={18} />
-                {label}
-              </span>
-              {on ? (
-                <span className="inline-flex items-center gap-1 text-xs font-semibold text-gh-green">
-                  <CheckIcon size={14} /> Connected
-                </span>
-              ) : id === "password" ? (
-                <Link
-                  href="/forgot-password"
-                  className="text-xs font-semibold text-gh-green hover:underline dark:text-gh-gold"
-                >
-                  Set a password
-                </Link>
-              ) : (
-                <span className="text-xs text-gh-black/50 dark:text-white/40">
-                  Sign in with {label} using {account.email} to connect
-                </span>
-              )}
-            </li>
-          ))}
-        </ul>
-        <p className="mt-3 text-xs text-gh-black/50 dark:text-white/40">
-          Forgot your password? You can always sign in with the receipt number from any plan payment.
         </p>
       </section>
 

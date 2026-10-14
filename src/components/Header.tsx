@@ -75,7 +75,7 @@ export default function Header() {
           </Link>
           {user !== undefined && (
             <Link
-              href={user ? "/developers/dashboard" : "/login"}
+              href={user ? "/account" : "/login"}
               className="btn-outline hidden !px-4 !py-2 md:inline-flex"
             >
               <UserIcon size={16} />
@@ -111,7 +111,7 @@ export default function Header() {
           ))}
           {user !== undefined && (
             <Link
-              href={user ? "/developers/dashboard" : "/login"}
+              href={user ? "/account" : "/login"}
               className="mt-2 flex items-center gap-2 rounded-xl border border-gh-black/10 px-3 py-2.5 text-sm font-semibold dark:border-white/15"
             >
               <UserIcon size={16} />

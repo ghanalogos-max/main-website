@@ -1,28 +1,33 @@
-// Lists contributors whose unpaid balance has reached the payout minimum.
+// Lists contributors whose unpaid rewards have reached the payout minimum.
 //
-//   npm run payouts               -> prints a CSV of who to pay
-//   npm run payouts -- --mark-paid -> also records those balances as paid
+//   npm run payouts                -> prints a CSV of who to pay
+//   npm run payouts -- --mark-paid -> also records those amounts as paid
 //
-// Needs the production Redis credentials in .env.local
-// (KV_REST_API_URL / KV_REST_API_TOKEN, copied from Vercel).
-// Keep in sync with src/lib/contributors.ts.
+// Needs in .env.local: NEXT_PUBLIC_SANITY_PROJECT_ID, SANITY_API_TOKEN, and the
+// production Redis credentials (KV_REST_API_URL / KV_REST_API_TOKEN from Vercel).
+// Keep the numbers in sync with src/lib/contributors.ts.
+import { createClient } from "@sanity/client";
 
-const SHARE = 0.5;
-const MINIMUM_GHS = 50;
-const START_MONTH = "2026-10";
+const REWARD_GHS = 10;
+const REWARD_BATCH = 20;
+const MINIMUM_GHS = REWARD_GHS;
 
-const url = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL;
-const token = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
-if (!url || !token) {
-  console.error("Set KV_REST_API_URL and KV_REST_API_TOKEN (from Vercel) in .env.local first.");
+const redisUrl = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL;
+const redisToken = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
+const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
+const sanityToken = process.env.SANITY_API_TOKEN;
+if (!redisUrl || !redisToken || !projectId || !sanityToken) {
+  console.error(
+    "Set KV_REST_API_URL, KV_REST_API_TOKEN, NEXT_PUBLIC_SANITY_PROJECT_ID and SANITY_API_TOKEN in .env.local first."
+  );
   process.exit(1);
 }
 const markPaid = process.argv.includes("--mark-paid");
 
 async function redis(commands) {
-  const res = await fetch(`${url}/pipeline`, {
+  const res = await fetch(`${redisUrl}/pipeline`, {
     method: "POST",
-    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+    headers: { Authorization: `Bearer ${redisToken}`, "Content-Type": "application/json" },
     body: JSON.stringify(commands),
   });
   if (!res.ok) throw new Error(`Redis error ${res.status}`);
@@ -32,82 +37,55 @@ async function redis(commands) {
   });
 }
 
-function finalMonths() {
-  const current = new Date().toISOString().slice(0, 7);
-  const months = [];
-  let [y, m] = START_MONTH.split("-").map(Number);
-  for (let key = START_MONTH; key < current; ) {
-    months.push(key);
-    m += 1;
-    if (m > 12) {
-      m = 1;
-      y += 1;
-    }
-    key = `${y}-${String(m).padStart(2, "0")}`;
-  }
-  return months;
-}
+const sanity = createClient({
+  projectId,
+  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "production",
+  token: sanityToken,
+  apiVersion: "2024-01-01",
+  useCdn: false,
+});
 
-async function contributorIds() {
-  const ids = new Set();
-  let cursor = "0";
-  do {
-    const [[next, keys]] = await redis([["SCAN", cursor, "MATCH", "gl:pool:dl:*:*", "COUNT", 500]]);
-    cursor = next;
-    for (const key of keys) ids.add(key.split(":")[3]);
-  } while (cursor !== "0");
-  return [...ids];
-}
+const approvedIds = await sanity.fetch(
+  `*[_type == "submission" && status == "approved" && defined(contributorId) && !(_id in path("drafts.**"))].contributorId`
+);
+const approved = new Map();
+for (const id of approvedIds) approved.set(id, (approved.get(id) ?? 0) + 1);
 
-const csv = (v) => `"${String(v ?? "").replace(/"/g, '""')}"`;
-
-const months = finalMonths();
-if (!months.length) {
-  console.log("No completed months yet.");
-  process.exit(0);
-}
-
-const totals = await redis(months.flatMap((m) => [["GET", `gl:pool:dl:${m}`], ["GET", `gl:pool:rev:${m}`]]));
-const pool = months.map((m, i) => ({
-  month: m,
-  totalDownloads: Number(totals[i * 2] ?? 0),
-  poolGhs: (Number(totals[i * 2 + 1] ?? 0) / 100) * SHARE,
-}));
+const ids = [...approved.keys()];
+const values = ids.length
+  ? await redis(ids.flatMap((id) => [["GET", `gl:contrib:paid:${id}`], ["GET", `gl:acct:${id}`]]))
+  : [];
 
 const rows = [];
-for (const id of await contributorIds()) {
-  const values = await redis([
-    ...months.map((m) => ["GET", `gl:pool:dl:${id}:${m}`]),
-    ["GET", `gl:pool:paid:${id}`],
-    ["GET", `gl:acct:${id}`],
-  ]);
-  const earned = pool.reduce((sum, p, i) => {
-    const downloads = Number(values[i] ?? 0);
-    return sum + (p.totalDownloads ? Math.floor(((p.poolGhs * downloads) / p.totalDownloads) * 100) / 100 : 0);
-  }, 0);
-  const paid = Number(values[months.length] ?? 0) / 100;
-  const balance = Math.floor((earned - paid) * 100) / 100;
-  if (balance < MINIMUM_GHS) continue;
-  const account = values[months.length + 1] ? JSON.parse(values[months.length + 1]) : null;
-  rows.push({ id, balance, account });
-}
+ids.forEach((id, i) => {
+  const earned = Math.floor(approved.get(id) / REWARD_BATCH) * REWARD_GHS;
+  const paid = Number(values[i * 2] ?? 0) / 100;
+  const balance = earned - paid;
+  if (balance < MINIMUM_GHS) return;
+  const account = values[i * 2 + 1] ? JSON.parse(values[i * 2 + 1]) : null;
+  const payable = Boolean(account?.phone && account?.phoneVerifiedAt && account?.payout);
+  rows.push({ id, approved: approved.get(id), balance, account, payable });
+});
 
-console.log("account_id,name,email,network,momo_number,wallet_name,amount_ghs");
-for (const { id, balance, account } of rows) {
-  const p = account?.payout;
+const csv = (v) => `"${String(v ?? "").replace(/"/g, '""')}"`;
+console.log("account_id,name,email,approved_logos,network,momo_number,wallet_name,amount_ghs");
+for (const { id, approved: count, balance, account } of rows) {
   console.log(
-    [id, account?.name, account?.email, p?.network, p?.number, p?.accountName, balance.toFixed(2)]
+    [id, account?.name, account?.email, count, account?.payout?.network, account?.phone, account?.payout?.accountName, balance.toFixed(2)]
       .map(csv)
       .join(",")
   );
 }
-const missing = rows.filter((r) => !r.account?.payout);
-if (missing.length) console.error(`\n${missing.length} contributor(s) have no Mobile Money details and won't be marked paid.`);
+
+const blocked = rows.filter((r) => !r.payable);
+if (blocked.length) {
+  console.error(`\n${blocked.length} contributor(s) have no verified phone or wallet details and won't be marked paid.`);
+}
 
 if (markPaid) {
-  const payable = rows.filter((r) => r.account?.payout);
+  const payable = rows.filter((r) => r.payable);
   if (payable.length) {
-    await redis(payable.map((r) => ["INCRBY", `gl:pool:paid:${r.id}`, Math.round(r.balance * 100)]));
+    await redis(payable.map((r) => ["INCRBY", `gl:contrib:paid:${r.id}`, Math.round(r.balance * 100)]));
   }
   console.error(`\nMarked ${payable.length} payout(s) as paid.`);
 } else if (rows.length) {

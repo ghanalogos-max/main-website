@@ -61,7 +61,8 @@ fair-use gate for the download experience, not DRM.
 ## Developer API
 
 `/developers` sells API access; `/developers/docs` is the reference and
-`/developers/dashboard` is where customers manage keys.
+`/account?tab=developer` is where customers manage keys (the old
+`/developers/dashboard` URL redirects there).
 
 - **Plans** (`src/lib/apiPlans.ts`): Sandbox (free, non-commercial),
   Individual, Team and Organisation, each with a monthly request quota, a
@@ -115,17 +116,18 @@ live under `/api/auth/*` (`src/lib/auth.ts`, `src/lib/developer.ts`).
 
 ## Contributor programme
 
-- Signed-in users add Mobile Money details at `/contributors/dashboard`, then
-  submit logos at `/contribute`. Submissions land in Sanity as pending; the
+- Signed-in users verify their phone and confirm their Mobile Money wallet under
+  **Account → Contributions** (`/account?tab=contributions`), then submit logos
+  at `/contribute`. Submissions land in Sanity as pending; the
   **Approve & publish** action in Studio creates the logo and links it to the
   contributor (`contributorId`).
-- Each month 50% of Premium revenue forms a pool, split by each contributor's
-  share of website downloads (once per visitor, per logo, per day; API and own
-  downloads excluded). Counters live in Redis under `gl:pool:*`. Settings are
-  in `src/lib/contributors.ts`.
+- Reward: GHS 10 for every 20 approved submissions, paid by Mobile Money to the
+  account's verified phone. It's a fixed fee for curation work, not a revenue
+  share. Settings are in `src/lib/contributors.ts`; amounts paid are stored in
+  Redis under `gl:contrib:paid:<accountId>` (pesewas).
 - Paying out: copy `KV_REST_API_URL`/`KV_REST_API_TOKEN` from Vercel into
-  `.env.local`, run `npm run payouts` for the CSV of balances of GHS 50 and up,
-  send the Mobile Money payments, then run `npm run payouts -- --mark-paid`.
+  `.env.local`, run `npm run payouts` for the CSV of who is owed money, send
+  the Mobile Money payments, then run `npm run payouts -- --mark-paid`.
 
 ## Getting started
 

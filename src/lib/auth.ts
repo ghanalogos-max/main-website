@@ -37,7 +37,7 @@ export function clientIp(req: NextRequest): string {
 }
 
 /** Only same-site relative paths, to avoid open redirects. */
-export function safeNext(value: unknown, fallback = "/developers/dashboard"): string {
+export function safeNext(value: unknown, fallback = "/account"): string {
   return typeof value === "string" &&
     value.startsWith("/") &&
     !value.startsWith("//") &&

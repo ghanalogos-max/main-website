@@ -128,7 +128,7 @@ export default async function DevelopersPage() {
               <BookIcon size={18} />
               Read the docs
             </Link>
-            <Link href="/developers/dashboard" className="btn-outline">
+            <Link href="/account?tab=developer" className="btn-outline">
               Dashboard
             </Link>
           </div>

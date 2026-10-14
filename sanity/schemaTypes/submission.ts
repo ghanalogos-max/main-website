@@ -21,7 +21,7 @@ export default defineType({
       title: "Contributor Account ID",
       type: "string",
       readOnly: true,
-      description: "Earnings from the published logo go to this account",
+      description: "Approved submissions count towards this account's contributor reward",
     }),
     defineField({ name: "sourceUrl", title: "Source Link", type: "url" }),
     defineField({ name: "file", title: "File", type: "file" }),

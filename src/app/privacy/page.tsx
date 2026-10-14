@@ -22,7 +22,7 @@ const SECTIONS = [
   },
   {
     title: "Contributors",
-    body: "If you join the contributor programme we also store your Mobile Money network, number and wallet name to pay your earnings, the logos you submit, and daily download counts for your approved logos. To count each download once per visitor per day, we briefly keep the downloader's IP address for about a day. Your name is shown publicly on logos you contributed; your email address and Mobile Money number are never published.",
+    body: "If you join the contributor programme we also store your Mobile Money network and wallet name (rewards are sent to your verified phone number), the logos you submit, and the rewards we've paid you. Your name is shown publicly on logos you contributed; your email address and phone number are never published.",
   },
   {
     title: "Cookies",

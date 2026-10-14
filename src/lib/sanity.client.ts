@@ -95,6 +95,14 @@ export async function submissionsFor(contributorId: string): Promise<Contributor
   );
 }
 
+export async function approvedCountFor(contributorId: string): Promise<number> {
+  if (!writeClient) return 0;
+  return writeClient.fetch<number>(
+    `count(*[_type == "submission" && contributorId == $id && status == "approved" && !(_id in path("drafts.**"))])`,
+    { id: contributorId }
+  );
+}
+
 export function incrementDownloadCount(id: string | undefined) {
   if (!writeClient || !id) return;
   writeClient

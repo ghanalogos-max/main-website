@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { FREE_DAILY_LIMIT } from "@/lib/plans";
-import { CONTRIBUTOR_SHARE, PAYOUT_MINIMUM_GHS } from "@/lib/contributors";
+import { PAYOUT_MINIMUM_GHS, REWARD_BATCH, REWARD_GHS } from "@/lib/contributors";
 import { PARENT_COMPANY, PARENT_URL } from "@/lib/seo";
 
 export const metadata: Metadata = {
@@ -95,23 +95,25 @@ export default function TermsPage() {
             uploaded.
           </p>
           <p className="mt-3">
-            Each month, {CONTRIBUTOR_SHARE * 100}% of that month&apos;s Premium
-            revenue (after refunds) forms the contributor pool. Each
-            contributor receives a share of the pool equal to their approved
-            logos&apos; share of website downloads that month, counted once
-            per visitor, per logo, per day. Developer API downloads and your
-            own downloads do not count. Earnings are paid by Mobile Money to
-            the wallet on your account by the 10th of the following month once
-            your unpaid balance reaches GHS {PAYOUT_MINIMUM_GHS}. You are
-            responsible for any tax on your earnings.
+            As a reward for the work of finding, checking and preparing
+            official artwork, {PARENT_COMPANY} pays GHS {REWARD_GHS} for every{" "}
+            {REWARD_BATCH} submissions it approves. The reward is a fixed
+            payment for that service; it is not a share of any revenue and
+            does not depend on how often a logo is viewed or downloaded.
+            Rewards are paid by Mobile Money only to the verified phone number
+            on your account, by the 10th of the month after your unpaid
+            rewards reach GHS {PAYOUT_MINIMUM_GHS}. Any taxes due on rewards
+            are your responsibility, and we may deduct tax where the law
+            requires it.
           </p>
           <p className="mt-3">
-            We may reject any submission, remove a logo (for example at the
-            brand owner&apos;s request, after which it stops earning), and
-            withhold earnings or close accounts involving fake or automated
-            downloads, multiple accounts or copied work. We may change the
-            programme&apos;s share or rules with 30 days&apos; notice; earnings
-            for completed months are not affected.
+            We decide which submissions to approve. We may remove any logo,
+            for example at the brand owner&apos;s request; rewards already paid
+            are not affected. We may withhold unpaid rewards and close
+            accounts that submit altered, invented or unverified artwork, or
+            that use more than one account. We may change the reward or these
+            rules with 30 days&apos; notice; approvals made before a change keep
+            the reward that applied when they were approved.
           </p>
         </section>
         <section>

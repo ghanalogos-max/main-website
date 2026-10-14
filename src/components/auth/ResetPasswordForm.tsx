@@ -39,7 +39,7 @@ export default function ResetPasswordForm({ token }: { token: string }) {
     setError(null);
     try {
       await postJson("/api/auth/reset", { token, password });
-      window.location.assign("/developers/dashboard");
+      window.location.assign("/account");
     } catch (err) {
       setError((err as Error).message);
       setBusy(false);

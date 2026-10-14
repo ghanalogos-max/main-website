@@ -61,7 +61,7 @@ export default function DevelopersPricing() {
   function choose(plan: ApiPlanId) {
     setError(null);
     if (plan === "free") {
-      router.push(account ? "/developers/dashboard" : "/signup?next=%2Fdevelopers%2Fdashboard");
+      router.push(account ? "/account?tab=developer" : "/signup?next=%2Faccount%3Ftab%3Ddeveloper");
       return;
     }
     setSelected(plan);
@@ -221,7 +221,7 @@ export default function DevelopersPricing() {
                 Verify your phone number in the dashboard before buying a plan. We use it to
                 protect your account and reach you about billing.
               </p>
-              <Link href="/developers/dashboard" className="btn-primary mt-5 w-full">
+              <Link href="/account?tab=developer" className="btn-primary mt-5 w-full">
                 Verify phone number
               </Link>
             </>

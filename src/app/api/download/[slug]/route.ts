@@ -4,10 +4,6 @@ import { getPremium, getUsage, recordDownload } from "@/lib/quota";
 import { FREE_DAILY_LIMIT, PREMIUM_ONLY_SIZES } from "@/lib/plans";
 import { incrementDownloadCount } from "@/lib/sanity.client";
 import { MIME_TYPES } from "@/lib/types";
-import { clientIp } from "@/lib/auth";
-import { recordPoolDownload } from "@/lib/contributors";
-import { sessionAccountId } from "@/lib/developer";
-
 export const dynamic = "force-dynamic";
 
 // Returns the master file. For SVG logos, PNG sizes are rasterised in the
@@ -51,13 +47,6 @@ export async function GET(
     remaining = Math.max(0, FREE_DAILY_LIMIT - (await recordDownload()));
   }
   incrementDownloadCount(logo._id);
-  await recordPoolDownload({
-    slug: logo.slug,
-    logoId: logo._id,
-    ip: clientIp(req),
-    viewerId: sessionAccountId() ?? undefined,
-  });
-
   return new NextResponse(file, {
     headers: {
       "Content-Type": MIME_TYPES[logo.format],

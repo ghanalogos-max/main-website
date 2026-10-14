@@ -25,8 +25,8 @@ export async function POST(req: NextRequest) {
 
   const account = await getSessionAccount();
   if (!account) return fail("Please sign in to submit a logo.", 401);
-  if (!account.payout) {
-    return fail("Add your Mobile Money details on your contributor dashboard first.", 403);
+  if (!account.phone || !account.phoneVerifiedAt || !account.payout) {
+    return fail("Verify your phone and add your Mobile Money details in your account first.", 403);
   }
 
   const hour = Math.floor(Date.now() / 3_600_000);
@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
       contributorId: account.id,
       submitterName: account.name,
       submitterEmail: account.email,
-      submitterPhone: account.payout.number,
+      submitterPhone: account.phone,
       sourceUrl: sourceUrl || undefined,
       file,
     });
