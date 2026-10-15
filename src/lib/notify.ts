@@ -15,6 +15,17 @@ export const notifyDevMode =
 
 export const verificationAvailable = (emailEnabled && smsEnabled) || notifyDevMode;
 
+const DEFAULT_FROM = "GhanaLogos <no-reply@ghanalogos.com>";
+
+/** Dashboard-pasted values often carry quotes or stray whitespace, which Resend rejects. */
+function emailFrom() {
+  const raw = (process.env.EMAIL_FROM || "").trim().replace(/^["']+|["']+$/g, "").trim();
+  if (/^[^<>@\s]+@[^<>@\s]+\.[^<>@\s]+$/.test(raw)) return raw;
+  if (/^[^<>"]+\s*<[^<>@\s]+@[^<>@\s]+\.[^<>@\s]+>$/.test(raw)) return raw;
+  if (raw) console.warn("EMAIL_FROM is not a valid sender; using the default.");
+  return DEFAULT_FROM;
+}
+
 export async function sendEmail(opts: {
   to: string;
   subject: string;
@@ -33,7 +44,7 @@ export async function sendEmail(opts: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      from: process.env.EMAIL_FROM || "GhanaLogos <no-reply@ghanalogos.com>",
+      from: emailFrom(),
       to: [opts.to],
       subject: opts.subject,
       text: opts.text,
