@@ -12,7 +12,9 @@ export async function generateStaticParams() {
   return categories.map((c) => ({ slug: c.slug }));
 }
 
-export const dynamicParams = false;
+// Categories added in Sanity after a deploy are rendered on first visit, then cached.
+export const dynamicParams = true;
+export const revalidate = 300;
 
 export async function generateMetadata({
   params,

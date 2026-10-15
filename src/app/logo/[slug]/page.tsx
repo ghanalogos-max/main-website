@@ -16,7 +16,9 @@ export async function generateStaticParams() {
   return logos.map((l) => ({ slug: l.slug }));
 }
 
-export const dynamicParams = false;
+// Logos added in Sanity after a deploy are rendered on first visit, then cached.
+export const dynamicParams = true;
+export const revalidate = 300;
 
 export async function generateMetadata({
   params,
