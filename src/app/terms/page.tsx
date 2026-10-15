@@ -121,8 +121,11 @@ export default function TermsPage() {
             Removal requests
           </h2>
           <p>
-            If you represent a brand and would like a logo updated or removed,
-            email{" "}
+            If you represent a brand and would like a logo updated or removed,{" "}
+            <a href="/contact?topic=removal" className="font-medium text-gh-green underline">
+              send us a removal request
+            </a>{" "}
+            or email{" "}
             <a href="mailto:hello@ghanalogos.com" className="font-medium text-gh-green underline">
               hello@ghanalogos.com
             </a>

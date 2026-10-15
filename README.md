@@ -151,7 +151,8 @@ Visit `http://localhost:3000`.
 | `NEXT_PUBLIC_SANITY_PROJECT_ID` / `_DATASET` | for real logos | Sanity project |
 | `SANITY_API_TOKEN` | for submissions | Editor token: saves logo submissions from `/contribute` and per-logo download counters |
 | `UPSTASH_REDIS_REST_URL` / `_TOKEN` | for the API | API accounts & keys; also per-IP daily limit |
-| `RESEND_API_KEY` / `EMAIL_FROM` | for sign-up | Verification and password-reset emails via Resend |
+| `RESEND_API_KEY` / `EMAIL_FROM` | for sign-up | Verification and password-reset emails via Resend; also delivers the `/contact` form |
+| `CONTACT_EMAIL` | no | Where contact form messages go (default `hello@ghanalogos.com`) |
 | `ARKESEL_API_KEY` / `SMS_SENDER_ID` | for sign-up | Verification SMS via Arkesel |
 | `GITHUB_CLIENT_ID` / `_SECRET` | no | "Continue with GitHub". Callback: `https://www.ghanalogos.com/api/auth/github/callback` |
 | `GOOGLE_CLIENT_ID` / `_SECRET` | no | "Continue with Google". Redirect URI: `https://www.ghanalogos.com/api/auth/google/callback` |

@@ -20,6 +20,7 @@ export async function sendEmail(opts: {
   subject: string;
   text: string;
   html: string;
+  replyTo?: string;
 }) {
   if (!emailEnabled) {
     console.info(`[dev email] to=${opts.to} subject="${opts.subject}"\n${opts.text}`);
@@ -37,6 +38,7 @@ export async function sendEmail(opts: {
       subject: opts.subject,
       text: opts.text,
       html: opts.html,
+      ...(opts.replyTo ? { reply_to: opts.replyTo } : {}),
     }),
   });
   if (!res.ok) {

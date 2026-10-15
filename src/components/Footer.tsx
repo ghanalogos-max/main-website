@@ -18,7 +18,7 @@ const COMPANY = [
   { href: "/about", label: "About GhanaLogos" },
   { href: "/terms", label: "Usage & trademarks" },
   { href: "/privacy", label: "Privacy policy" },
-  { href: "mailto:hello@ghanalogos.com", label: "Contact" },
+  { href: "/contact", label: "Contact" },
 ];
 
 function Column({
