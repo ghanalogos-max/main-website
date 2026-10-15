@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { getLogos, getCategories } from "@/lib/queries";
 import { itemListJsonLd } from "@/lib/seo";
 import Browser from "@/components/Browser";
+import CategoryIcon from "@/components/CategoryIcon";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import JsonLd from "@/components/JsonLd";
 
@@ -57,7 +58,10 @@ export default async function CategoryPage({
           { name: category.title, path: `/category/${category.slug}` },
         ]}
       />
-      <h1 className="mb-3 mt-5 font-display text-3xl font-extrabold tracking-tight md:text-5xl">
+      <h1 className="mb-3 mt-5 flex items-center gap-3 font-display text-3xl font-extrabold tracking-tight md:text-5xl">
+        <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gh-green/10 text-gh-green md:h-14 md:w-14 dark:bg-gh-gold/10 dark:text-gh-gold">
+          <CategoryIcon slug={category.slug} size={28} />
+        </span>
         {category.title} logos
       </h1>
       <p className="mb-8 max-w-2xl text-gh-black/60 dark:text-white/50">
@@ -75,8 +79,9 @@ export default async function CategoryPage({
               <Link
                 key={c.slug}
                 href={`/category/${c.slug}`}
-                className="rounded-full border border-gh-black/10 bg-white/70 px-4 py-1.5 text-sm font-medium transition-colors hover:border-gh-green hover:text-gh-green dark:border-white/10 dark:bg-white/5 dark:hover:border-gh-gold dark:hover:text-gh-gold"
+                className="inline-flex items-center gap-1.5 rounded-full border border-gh-black/10 bg-white/70 px-4 py-1.5 text-sm font-medium transition-colors hover:border-gh-green hover:text-gh-green dark:border-white/10 dark:bg-white/5 dark:hover:border-gh-gold dark:hover:text-gh-gold"
               >
+                <CategoryIcon slug={c.slug} size={16} />
                 {c.title}
               </Link>
             ))}

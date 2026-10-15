@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getLogos, getCategories } from "@/lib/queries";
 import { FREE_DAILY_LIMIT, PLANS } from "@/lib/plans";
 import Browser from "@/components/Browser";
+import CategoryIcon from "@/components/CategoryIcon";
 import JsonLd from "@/components/JsonLd";
 import { faqJsonLd } from "@/lib/seo";
 import {
@@ -122,6 +123,9 @@ export default async function HomePage() {
                 href={`/category/${c.slug}`}
                 className="panel group flex flex-col p-4 transition-all hover:-translate-y-0.5 hover:border-gh-green/40"
               >
+                <span className="mb-3 flex h-9 w-9 items-center justify-center rounded-xl bg-gh-green/10 text-gh-green dark:bg-gh-gold/10 dark:text-gh-gold">
+                  <CategoryIcon slug={c.slug} size={18} />
+                </span>
                 <span className="font-display text-sm font-bold group-hover:text-gh-green dark:group-hover:text-gh-gold">
                   {c.title}
                 </span>

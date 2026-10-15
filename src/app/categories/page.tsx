@@ -1,7 +1,8 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { getLogos, getCategories } from "@/lib/queries";
-import { ArrowRightIcon, FolderIcon } from "@/components/icons";
+import { ArrowRightIcon } from "@/components/icons";
+import CategoryIcon from "@/components/CategoryIcon";
 import Breadcrumbs from "@/components/Breadcrumbs";
 
 export const metadata: Metadata = {
@@ -36,7 +37,7 @@ export default async function CategoriesPage() {
             >
               <div className="flex items-start justify-between">
                 <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gh-green/10 text-gh-green dark:bg-gh-gold/10 dark:text-gh-gold">
-                  <FolderIcon size={22} />
+                  <CategoryIcon slug={cat.slug} size={22} />
                 </div>
                 <ArrowRightIcon
                   size={18}

@@ -8,6 +8,7 @@ import type { LogoFormat } from "@/lib/types";
 import LogoDetail from "@/components/LogoDetail";
 import LogoGrid from "@/components/LogoGrid";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import CategoryIcon from "@/components/CategoryIcon";
 import JsonLd from "@/components/JsonLd";
 import { LinkIcon, InfoIcon } from "@/components/icons";
 
@@ -119,7 +120,8 @@ export default async function LogoPage({
       "Category",
       <span key="cat" className="flex flex-wrap gap-x-2">
         {logoCategories.map((c) => (
-          <Link key={c.slug} href={`/category/${c.slug}`} className="text-gh-green hover:underline dark:text-gh-gold">
+          <Link key={c.slug} href={`/category/${c.slug}`} className="inline-flex items-center gap-1 text-gh-green hover:underline dark:text-gh-gold">
+            <CategoryIcon slug={c.slug} size={14} />
             {c.title}
           </Link>
         ))}
