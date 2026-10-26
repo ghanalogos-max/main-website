@@ -1,6 +1,9 @@
 import { createHash, randomBytes, randomInt, timingSafeEqual } from "crypto";
 import { kv } from "./store";
+import { emailLayout } from "./email";
 import { emailDevMode, sendEmail, sendSms, smsDevMode } from "./notify";
+
+export { emailLayout } from "./email";
 
 const CODE_TTL = 10 * 60;
 const MAX_ATTEMPTS = 5;
@@ -46,21 +49,6 @@ function matches(expectedHex: string | undefined, token: string, code: string): 
   const given = hashCode(token, code);
   const expected = Buffer.from(expectedHex, "hex");
   return expected.length === given.length && timingSafeEqual(expected, given);
-}
-
-function escapeHtml(value: string) {
-  return value.replace(/[&<>"']/g, (c) =>
-    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!
-  );
-}
-
-export function emailLayout(name: string, body: string) {
-  return `<div style="font-family:Arial,sans-serif;max-width:480px;margin:auto;color:#0a0a0a">
-  <p style="font-size:20px;font-weight:800">Ghana<span style="color:#ce1126">Logos</span></p>
-  <p>Hi ${escapeHtml(name)},</p>
-  ${body}
-  <p style="color:#888;font-size:12px;margin-top:32px">GhanaLogos — a Celestial Web Solutions product</p>
-</div>`;
 }
 
 async function throttle(ip: string, email?: string, phone?: string) {
@@ -114,9 +102,11 @@ export async function startVerification<T>(opts: {
           text: `Hi ${opts.name},\n\nYour GhanaLogos verification code is ${emailCode}. It expires in 10 minutes.\n\nIf you didn't request this, you can ignore this email.\n\nGhanaLogos — a Celestial Web Solutions product`,
           html: emailLayout(
             opts.name,
-            `<p>Use this code to verify your email address:</p>
-  <p style="font-size:32px;font-weight:800;letter-spacing:6px;margin:24px 0">${emailCode}</p>
-  <p style="color:#555">It expires in 10 minutes. If you didn't request this, you can ignore this email.</p>`
+            `<p style="margin:0 0 8px">Use this code to verify your email address:</p>
+  <div style="margin:24px 0;padding:20px;text-align:center;background:#F3F5F3;border-radius:12px;border:1px solid #E4E8E4">
+    <span style="font-size:36px;font-weight:800;letter-spacing:10px;color:#006B3F;font-family:Consolas,'Courier New',monospace">${emailCode}</span>
+  </div>
+  <p style="margin:0;color:#555555;font-size:14px">This code expires in <strong>10 minutes</strong>.</p>`
           ),
         }),
       opts.phone &&

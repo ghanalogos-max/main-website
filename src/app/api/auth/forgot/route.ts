@@ -3,7 +3,7 @@ import { AuthError, EMAIL, clientIp, createResetToken, siteOrigin } from "@/lib/
 import { accountForEmail } from "@/lib/developer";
 import { emailDevMode, emailVerificationAvailable, sendEmail } from "@/lib/notify";
 import { kv } from "@/lib/store";
-import { emailLayout } from "@/lib/verification";
+import { emailButton, emailLayout } from "@/lib/email";
 import { fail, unavailable } from "../respond";
 
 // Always answers the same way so it can't be used to discover accounts.
@@ -37,9 +37,10 @@ export async function POST(req: NextRequest) {
         text: `Hi ${account.name},\n\nReset your GhanaLogos password with this link (valid for 1 hour):\n${link}\n\nIf you didn't ask for this, you can ignore this email — your password won't change.\n\nGhanaLogos — a Celestial Web Solutions product`,
         html: emailLayout(
           account.name,
-          `<p>We received a request to reset your GhanaLogos password.</p>
-  <p style="margin:28px 0"><a href="${link}" style="background:#006b3f;color:#fff;padding:12px 22px;border-radius:999px;text-decoration:none;font-weight:700">Reset password</a></p>
-  <p style="color:#555">This link is valid for 1 hour. If you didn't ask for this, you can ignore this email — your password won't change.</p>`
+          `<p style="margin:0 0 8px">We received a request to reset your GhanaLogos password.</p>
+  ${emailButton(link, "Reset password")}
+  <p style="margin:0;color:#555555;font-size:14px">This link is valid for <strong>1 hour</strong>. If you didn’t ask for this, your password won’t change.</p>
+  <p style="margin:16px 0 0;font-size:12px;color:#888888;word-break:break-all">Or paste this URL into your browser:<br /><a href="${link}" style="color:#006B3F">${link}</a></p>`
         ),
       });
       if (emailDevMode) devLink = link;

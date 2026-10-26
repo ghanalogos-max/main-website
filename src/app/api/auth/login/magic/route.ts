@@ -10,7 +10,7 @@ import {
 import { accountForEmail } from "@/lib/developer";
 import { emailDevMode, emailVerificationAvailable, sendEmail } from "@/lib/notify";
 import { kv } from "@/lib/store";
-import { emailLayout } from "@/lib/verification";
+import { emailButton, emailLayout } from "@/lib/email";
 import { fail, unavailable } from "../../respond";
 
 // Always answers the same way so it can't be used to discover accounts.
@@ -46,9 +46,9 @@ export async function POST(req: NextRequest) {
         text: `Hi ${account.name},\n\nSign in to GhanaLogos with this link (valid for 15 minutes):\n${link}\n\nIf you didn't ask for this, you can ignore this email.\n\nGhanaLogos — a Celestial Web Solutions product`,
         html: emailLayout(
           account.name,
-          `<p>Use this link to sign in to GhanaLogos. It expires in 15 minutes and can only be used once.</p>
-  <p style="margin:28px 0"><a href="${link}" style="background:#006b3f;color:#fff;padding:12px 22px;border-radius:999px;text-decoration:none;font-weight:700">Sign in</a></p>
-  <p style="color:#555">If you didn't ask for this, you can ignore this email.</p>`
+          `<p style="margin:0 0 8px">Use this link to sign in to GhanaLogos. It expires in <strong>15 minutes</strong> and can only be used once.</p>
+  ${emailButton(link, "Sign in to GhanaLogos")}
+  <p style="margin:0;font-size:12px;color:#888888;word-break:break-all">Or paste this URL into your browser:<br /><a href="${link}" style="color:#006B3F">${link}</a></p>`
         ),
       });
       if (emailDevMode) devLink = link;
