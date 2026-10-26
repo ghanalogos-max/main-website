@@ -1,4 +1,4 @@
-// Outbound email (Resend) and SMS (Arkesel) used for sign-up verification.
+// Outbound email (Resend) and SMS (Arkesel).
 const resendKey = process.env.RESEND_API_KEY;
 const arkeselKey = process.env.ARKESEL_API_KEY;
 
@@ -6,14 +6,30 @@ export const emailEnabled = Boolean(resendKey);
 export const smsEnabled = Boolean(arkeselKey);
 
 /**
- * Without providers, codes are printed to the server log instead of being
- * sent. Only allowed outside production or with the in-memory test store.
+ * Without a provider, codes/links are printed to the server log instead of
+ * being sent. Only allowed outside production or with the in-memory test store.
  */
-export const notifyDevMode =
-  (!emailEnabled || !smsEnabled) &&
-  (process.env.NODE_ENV !== "production" || process.env.API_STORE === "memory");
+const allowDevFallback =
+  process.env.NODE_ENV !== "production" || process.env.API_STORE === "memory";
 
-export const verificationAvailable = (emailEnabled && smsEnabled) || notifyDevMode;
+export const emailDevMode = !emailEnabled && allowDevFallback;
+export const smsDevMode = !smsEnabled && allowDevFallback;
+
+/** True when email or SMS falls back to logging (local/dev). */
+export const notifyDevMode = emailDevMode || smsDevMode;
+
+export const emailVerificationAvailable = emailEnabled || emailDevMode;
+export const smsVerificationAvailable = smsEnabled || smsDevMode;
+
+/**
+ * Re-enable SMS OTP on email sign-up when Arkesel is ready.
+ * Account phone verification for contributors is separate and uses SMS always.
+ */
+export const signupSmsEnabled =
+  process.env.ENABLE_SIGNUP_SMS === "1" && smsVerificationAvailable;
+
+/** @deprecated Prefer emailVerificationAvailable / smsVerificationAvailable. */
+export const verificationAvailable = emailVerificationAvailable && smsVerificationAvailable;
 
 const DEFAULT_FROM = "GhanaLogos <no-reply@ghanalogos.com>";
 

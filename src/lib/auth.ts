@@ -18,8 +18,11 @@ export const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export interface SignupPayload {
   name: string;
   email: string;
-  phone: string;
+  /** Optional; verified later via account SMS for contributor payouts. */
+  phone?: string;
   passwordHash: string;
+  /** True when signup also confirmed an SMS code (ENABLE_SIGNUP_SMS). */
+  phoneVerified?: boolean;
 }
 
 export class AuthError extends Error {
@@ -118,6 +121,23 @@ export async function accountIdForResetToken(token: string): Promise<string | nu
 
 export async function consumeResetToken(token: string) {
   await kv.del(resetKey(token));
+}
+
+// Magic-link sign-in tokens: random, stored hashed, valid for 15 minutes, single use.
+const magicKey = (token: string) =>
+  `gl:magic:${createHash("sha256").update(token).digest("hex")}`;
+
+export async function createMagicToken(accountId: string): Promise<string> {
+  const token = randomBytes(32).toString("base64url");
+  await kv.set(magicKey(token), accountId, 15 * 60);
+  return token;
+}
+
+export async function consumeMagicToken(token: string): Promise<string | null> {
+  const key = magicKey(token);
+  const accountId = await kv.get<string>(key);
+  if (accountId) await kv.del(key);
+  return accountId;
 }
 
 // OAuth (GitHub, Google) — authorization code flow with a signed state cookie.

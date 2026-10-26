@@ -57,13 +57,14 @@ export default function TermsPage() {
             Accounts
           </h2>
           <p>
-            You can create an account with your email and a password, or
-            continue with Google or GitHub. You must give accurate details,
-            including a phone number you control, and you are responsible for
-            keeping your password, payment receipts and API keys secure and
-            for activity under your account. You must be at least 13 years
-            old to create an account. We may suspend accounts that break these
-            terms.
+            You can create an account with your email and a password, a
+            magic-link email, or continue with Google or GitHub. You must give
+            accurate details. If you add a phone number (required for
+            contributor payouts), it must be one you control. You are
+            responsible for keeping your password, payment receipts and API
+            keys secure and for activity under your account. You must be at
+            least 13 years old to create an account. We may suspend accounts
+            that break these terms.
           </p>
         </section>
         <section>

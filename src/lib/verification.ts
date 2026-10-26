@@ -1,6 +1,6 @@
 import { createHash, randomBytes, randomInt, timingSafeEqual } from "crypto";
 import { kv } from "./store";
-import { notifyDevMode, sendEmail, sendSms } from "./notify";
+import { emailDevMode, sendEmail, sendSms, smsDevMode } from "./notify";
 
 const CODE_TTL = 10 * 60;
 const MAX_ATTEMPTS = 5;
@@ -83,7 +83,7 @@ export interface StartedVerification {
 
 /**
  * Sends one-time codes to an email address and/or phone number and stores
- * `payload` until both codes are confirmed.
+ * `payload` until the required codes are confirmed.
  */
 export async function startVerification<T>(opts: {
   payload: T;
@@ -130,10 +130,15 @@ export async function startVerification<T>(opts: {
     throw new VerificationError((err as Error).message, 502);
   }
 
-  return {
-    token,
-    devCodes: notifyDevMode ? { email: emailCode, phone: phoneCode } : undefined,
-  };
+  const devCodes =
+    (emailDevMode && emailCode) || (smsDevMode && phoneCode)
+      ? {
+          ...(emailDevMode && emailCode ? { email: emailCode } : {}),
+          ...(smsDevMode && phoneCode ? { phone: phoneCode } : {}),
+        }
+      : undefined;
+
+  return { token, devCodes };
 }
 
 /** Checks the codes and returns the stored payload. Codes work once. */

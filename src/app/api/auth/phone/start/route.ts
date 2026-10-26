@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { AuthError, clientIp } from "@/lib/auth";
 import { getSessionAccount } from "@/lib/developer";
-import { verificationAvailable } from "@/lib/notify";
+import { smsVerificationAvailable } from "@/lib/notify";
 import { PHONE_HINT, formatPhone, normalizePhone, startVerification } from "@/lib/verification";
 import { fail, unavailable } from "../../respond";
 
@@ -9,7 +9,7 @@ import { fail, unavailable } from "../../respond";
 export async function POST(req: NextRequest) {
   const down = unavailable();
   if (down) return down;
-  if (!verificationAvailable) {
+  if (!smsVerificationAvailable) {
     return NextResponse.json({ error: "Phone verification isn't available yet." }, { status: 503 });
   }
 

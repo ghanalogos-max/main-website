@@ -10,6 +10,12 @@ export const metadata: Metadata = {
   alternates: { canonical: "/login" },
 };
 
+function loginMethod(value: string | undefined): "password" | "receipt" | "magic" {
+  if (value === "receipt") return "receipt";
+  if (value === "magic") return "magic";
+  return "password";
+}
+
 export default function LoginPage({
   searchParams,
 }: {
@@ -23,7 +29,7 @@ export default function LoginPage({
       providers={oauthProviders}
       next={next}
       error={searchParams.error?.slice(0, 200) ?? null}
-      method={searchParams.method === "receipt" ? "receipt" : "password"}
+      method={loginMethod(searchParams.method)}
     />
   );
 }

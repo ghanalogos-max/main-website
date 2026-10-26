@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { LoadingIcon, LockIcon, TicketIcon } from "../icons";
+import { LoadingIcon, LockIcon, MailIcon, TicketIcon } from "../icons";
 import {
   AuthCard,
   FormError,
@@ -13,7 +13,7 @@ import {
   postJson,
 } from "./AuthUI";
 
-type Method = "password" | "receipt";
+type Method = "password" | "receipt" | "magic";
 
 export default function LoginForm({
   providers,
@@ -32,6 +32,8 @@ export default function LoginForm({
   const [reference, setReference] = useState("");
   const [error, setError] = useState<string | null>(initialError);
   const [busy, setBusy] = useState(false);
+  const [magicSent, setMagicSent] = useState(false);
+  const [devLink, setDevLink] = useState<string | undefined>();
 
   const nextQuery = next === "/account" ? "" : `?next=${encodeURIComponent(next)}`;
 
@@ -42,10 +44,19 @@ export default function LoginForm({
     try {
       if (method === "password") {
         await postJson("/api/auth/login", { email, password });
-      } else {
+        window.location.assign(next);
+      } else if (method === "receipt") {
         await postJson("/api/auth/login/receipt", { email, reference });
+        window.location.assign(next);
+      } else {
+        const data = await postJson<{ ok: true; devLink?: string }>("/api/auth/login/magic", {
+          email,
+          next,
+        });
+        setDevLink(data.devLink);
+        setMagicSent(true);
+        setBusy(false);
       }
-      window.location.assign(next);
     } catch (err) {
       setError((err as Error).message);
       setBusy(false);
@@ -55,16 +66,65 @@ export default function LoginForm({
   function switchMethod(m: Method) {
     setMethod(m);
     setError(null);
+    setMagicSent(false);
+    setDevLink(undefined);
+  }
+
+  const title =
+    method === "password" ? "Sign in" : method === "receipt" ? "Sign in with receipt" : "Email me a link";
+  const subtitle =
+    method === "password"
+      ? "Welcome back to GhanaLogos."
+      : method === "receipt"
+        ? "Forgot your password? Use the email on your account and the reference from any GhanaLogos payment receipt."
+        : "We'll email you a one-time link. No password needed.";
+
+  if (method === "magic" && magicSent) {
+    return (
+      <AuthCard
+        title="Check your email"
+        subtitle={
+          <>
+            If an account exists for <strong>{email}</strong>, we sent a sign-in link. It expires in 15
+            minutes.
+          </>
+        }
+        footer={
+          <button
+            type="button"
+            onClick={() => switchMethod("password")}
+            className="font-semibold text-gh-green hover:underline dark:text-gh-gold"
+          >
+            Back to password sign-in
+          </button>
+        }
+      >
+        {devLink && (
+          <p className="rounded-xl border border-gh-gold/40 bg-gh-gold/10 px-3 py-2 text-xs">
+            Test mode (no email provider configured):{" "}
+            <a href={devLink} className="font-semibold underline break-all">
+              {devLink}
+            </a>
+          </p>
+        )}
+        <button
+          type="button"
+          onClick={() => {
+            setMagicSent(false);
+            setDevLink(undefined);
+          }}
+          className="mt-2 text-sm font-semibold text-gh-green hover:underline dark:text-gh-gold"
+        >
+          Use a different email
+        </button>
+      </AuthCard>
+    );
   }
 
   return (
     <AuthCard
-      title={method === "password" ? "Sign in" : "Sign in with receipt"}
-      subtitle={
-        method === "password"
-          ? "Welcome back to GhanaLogos."
-          : "Forgot your password? Use the email on your account and the reference from any GhanaLogos payment receipt."
-      }
+      title={title}
+      subtitle={subtitle}
       footer={
         <>
           New to GhanaLogos?{" "}
@@ -104,7 +164,7 @@ export default function LoginForm({
             </div>
             <PasswordInput id="password" value={password} onChange={setPassword} autoComplete="current-password" />
           </div>
-        ) : (
+        ) : method === "receipt" ? (
           <label className="grid gap-1.5 text-sm font-medium">
             Receipt / ticket number
             <input
@@ -120,29 +180,43 @@ export default function LoginForm({
               It&apos;s the &quot;Reference&quot; on the Paystack receipt we emailed you.
             </span>
           </label>
-        )}
+        ) : null}
 
         <button type="submit" disabled={busy} className="btn-primary mt-2 w-full">
           {busy ? <LoadingIcon size={18} className="animate-spin" /> : null}
-          {method === "password" ? "Sign in" : "Sign in with receipt"}
+          {method === "password" ? "Sign in" : method === "receipt" ? "Sign in with receipt" : "Email me a sign-in link"}
         </button>
       </form>
 
-      <button
-        type="button"
-        onClick={() => switchMethod(method === "password" ? "receipt" : "password")}
-        className="mt-4 flex w-full items-center justify-center gap-2 text-sm font-semibold text-gh-black/60 hover:text-gh-green dark:text-white/60 dark:hover:text-gh-gold"
-      >
-        {method === "password" ? (
-          <>
-            <TicketIcon size={16} /> Sign in with a receipt number instead
-          </>
-        ) : (
-          <>
-            <LockIcon size={16} /> Sign in with your password instead
-          </>
+      <div className="mt-4 grid gap-2">
+        {method !== "magic" && (
+          <button
+            type="button"
+            onClick={() => switchMethod("magic")}
+            className="flex w-full items-center justify-center gap-2 text-sm font-semibold text-gh-black/60 hover:text-gh-green dark:text-white/60 dark:hover:text-gh-gold"
+          >
+            <MailIcon size={16} /> Email me a sign-in link instead
+          </button>
         )}
-      </button>
+        {method !== "receipt" && (
+          <button
+            type="button"
+            onClick={() => switchMethod("receipt")}
+            className="flex w-full items-center justify-center gap-2 text-sm font-semibold text-gh-black/60 hover:text-gh-green dark:text-white/60 dark:hover:text-gh-gold"
+          >
+            <TicketIcon size={16} /> Sign in with a receipt number instead
+          </button>
+        )}
+        {method !== "password" && (
+          <button
+            type="button"
+            onClick={() => switchMethod("password")}
+            className="flex w-full items-center justify-center gap-2 text-sm font-semibold text-gh-black/60 hover:text-gh-green dark:text-white/60 dark:hover:text-gh-gold"
+          >
+            <LockIcon size={16} /> Sign in with your password instead
+          </button>
+        )}
+      </div>
 
       {(providers.github || providers.google) && method === "password" && (
         <TermsNote action="continuing" />

@@ -88,31 +88,35 @@ fair-use gate for the download experience, not DRM.
 Pages: `/login`, `/signup`, `/forgot-password`, `/reset-password`. API routes
 live under `/api/auth/*` (`src/lib/auth.ts`, `src/lib/developer.ts`).
 
-- **Email sign-up**: name, email, phone, password and acceptance of the
-  Terms and Privacy Policy. A 6-digit code is sent by email (Resend) and
-  another by SMS (Arkesel); both must be entered before the account is
-  created. Codes expire after 10 minutes, allow 5 attempts and can be resent
-  once a minute (6 requests per IP per hour).
+- **Email sign-up**: name, email, optional phone, password and acceptance of
+  the Terms and Privacy Policy. A 6-digit code is sent by email (Resend) and
+  must be entered before the account is created. Phone numbers are verified
+  later by SMS from **Account → Contributions** (needed for contributor
+  payouts and before creating paid API keys). Set `ENABLE_SIGNUP_SMS=1` to
+  also require an Arkesel SMS code at sign-up. Codes expire after 10 minutes,
+  allow 5 attempts and can be resent once a minute (6 requests per IP per hour).
 - **Continue with Google / GitHub**: shown only when the matching
   `*_CLIENT_ID` and `*_CLIENT_SECRET` are set. Only verified provider emails
   are accepted; signing in with a provider whose email matches an existing
-  account links it to that account. Provider accounts verify their phone by
-  SMS in the dashboard before creating API keys or buying a plan.
+  account links it to that account.
 - **Passwords**: scrypt-hashed, at least 8 characters with a letter and a
   number. Failed sign-ins are limited to 8 per email and 30 per IP every
   15 minutes.
 - **Forgot / reset password**: emails a single-use link valid for 1 hour.
   The response never reveals whether an account exists. Resetting signs out
   every other session.
+- **Magic-link sign-in**: email a single-use link valid for 15 minutes
+  (`/login?method=magic`). Same anti-enumeration behaviour as password reset.
 - **Sign in with receipt number**: customers who forgot their password can
   sign in with their account email plus the reference from any Paystack
   receipt for an API plan (`/login?method=receipt`).
 - **Sessions**: an HMAC-signed, httpOnly, `Secure` cookie (`gl_dev`, 90 days)
   carrying the account id and a session version.
-- Without `RESEND_API_KEY` and `ARKESEL_API_KEY`, codes and reset links are
-  printed to the server log and shown on screen in development only; in
-  production email sign-up and password reset stay disabled until both are
-  set (receipt and provider sign-in still work).
+- Without `RESEND_API_KEY`, email sign-up, magic links and password reset are
+  printed to the server log in development only; in production they stay
+  disabled until Resend is set (receipt and provider sign-in still work).
+  `ARKESEL_API_KEY` is only required for phone verification (and optional
+  signup SMS).
 
 ## Contributor programme
 
@@ -151,9 +155,10 @@ Visit `http://localhost:3000`.
 | `NEXT_PUBLIC_SANITY_PROJECT_ID` / `_DATASET` | for real logos | Sanity project |
 | `SANITY_API_TOKEN` | for submissions | Editor token: saves logo submissions from `/contribute` and per-logo download counters |
 | `UPSTASH_REDIS_REST_URL` / `_TOKEN` | for the API | API accounts & keys; also per-IP daily limit |
-| `RESEND_API_KEY` / `EMAIL_FROM` | for sign-up | Verification and password-reset emails via Resend; also delivers the `/contact` form |
+| `RESEND_API_KEY` / `EMAIL_FROM` | for sign-up | Verification, magic-link and password-reset emails via Resend; also delivers the `/contact` form |
 | `CONTACT_EMAIL` | no | Where contact form messages go (default `hello@ghanalogos.com`) |
-| `ARKESEL_API_KEY` / `SMS_SENDER_ID` | for sign-up | Verification SMS via Arkesel |
+| `ARKESEL_API_KEY` / `SMS_SENDER_ID` | for phone verify | Account phone verification SMS via Arkesel (contributor payouts) |
+| `ENABLE_SIGNUP_SMS` | no | Set to `1` to also require SMS OTP at email sign-up (needs Arkesel) |
 | `GITHUB_CLIENT_ID` / `_SECRET` | no | "Continue with GitHub". Callback: `https://www.ghanalogos.com/api/auth/github/callback` |
 | `GOOGLE_CLIENT_ID` / `_SECRET` | no | "Continue with Google". Redirect URI: `https://www.ghanalogos.com/api/auth/google/callback` |
 | `NEXT_PUBLIC_API_INDIVIDUAL_GHS` / `_TEAM_GHS` / `_ORGANISATION_GHS` | no | Monthly API prices. Defaults `99` / `399` / `1199` |

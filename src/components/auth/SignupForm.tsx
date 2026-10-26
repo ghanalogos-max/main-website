@@ -16,7 +16,8 @@ import {
 type Started = {
   token: string;
   email: string;
-  phone: string;
+  phone: string | null;
+  sms: boolean;
   devCodes?: { email?: string; phone?: string };
 };
 
@@ -45,7 +46,7 @@ export default function SignupForm({ providers, next }: { providers: Providers; 
     const data = await postJson<Started>("/api/auth/signup/start", {
       name,
       email,
-      phone,
+      phone: phone.trim() || undefined,
       password,
       acceptTerms: accept,
     });
@@ -90,7 +91,11 @@ export default function SignupForm({ providers, next }: { providers: Providers; 
     setBusy(true);
     setError(null);
     try {
-      await postJson("/api/auth/signup/complete", { token: started.token, emailCode, phoneCode });
+      await postJson("/api/auth/signup/complete", {
+        token: started.token,
+        emailCode,
+        ...(started.sms ? { phoneCode } : {}),
+      });
       window.location.assign(next);
     } catch (err) {
       setError((err as Error).message);
@@ -101,12 +106,18 @@ export default function SignupForm({ providers, next }: { providers: Providers; 
   if (started) {
     return (
       <AuthCard
-        title="Verify your details"
+        title="Verify your email"
         subtitle={
-          <>
-            We sent a 6-digit code to <strong>{started.email}</strong> and another by SMS to{" "}
-            <strong>{started.phone}</strong>. Codes expire in 10 minutes.
-          </>
+          started.sms && started.phone ? (
+            <>
+              We sent a 6-digit code to <strong>{started.email}</strong> and another by SMS to{" "}
+              <strong>{started.phone}</strong>. Codes expire in 10 minutes.
+            </>
+          ) : (
+            <>
+              We sent a 6-digit code to <strong>{started.email}</strong>. It expires in 10 minutes.
+            </>
+          )
         }
       >
         <form onSubmit={submitCodes} className="grid gap-3">
@@ -114,18 +125,24 @@ export default function SignupForm({ providers, next }: { providers: Providers; 
           {started.devCodes && (
             <p className="rounded-xl border border-gh-gold/40 bg-gh-gold/10 px-3 py-2 text-xs">
               Test mode (no email/SMS provider configured): email code{" "}
-              <strong className="font-mono">{started.devCodes.email}</strong>, SMS code{" "}
-              <strong className="font-mono">{started.devCodes.phone}</strong>
+              <strong className="font-mono">{started.devCodes.email}</strong>
+              {started.devCodes.phone ? (
+                <>
+                  , SMS code <strong className="font-mono">{started.devCodes.phone}</strong>
+                </>
+              ) : null}
             </p>
           )}
           <label className="grid gap-1.5 text-sm font-medium">
             Email code
             <CodeInput value={emailCode} onChange={setEmailCode} />
           </label>
-          <label className="grid gap-1.5 text-sm font-medium">
-            SMS code
-            <CodeInput value={phoneCode} onChange={setPhoneCode} />
-          </label>
+          {started.sms ? (
+            <label className="grid gap-1.5 text-sm font-medium">
+              SMS code
+              <CodeInput value={phoneCode} onChange={setPhoneCode} />
+            </label>
+          ) : null}
           <button type="submit" disabled={busy} className="btn-primary mt-2 w-full">
             {busy ? <LoadingIcon size={18} className="animate-spin" /> : null}
             Create account
@@ -148,7 +165,7 @@ export default function SignupForm({ providers, next }: { providers: Providers; 
             disabled={busy || cooldown > 0}
             className="font-semibold text-gh-green hover:underline disabled:cursor-not-allowed disabled:text-gh-black/40 disabled:no-underline dark:text-gh-gold dark:disabled:text-white/40"
           >
-            {cooldown > 0 ? `Resend codes in ${cooldown}s` : "Resend codes"}
+            {cooldown > 0 ? `Resend code${started.sms ? "s" : ""} in ${cooldown}s` : `Resend code${started.sms ? "s" : ""}`}
           </button>
         </div>
       </AuthCard>
@@ -197,9 +214,8 @@ export default function SignupForm({ providers, next }: { providers: Providers; 
           />
         </label>
         <label className="grid gap-1.5 text-sm font-medium">
-          Phone number
+          Phone number <span className="font-normal text-gh-black/45 dark:text-white/40">(optional)</span>
           <input
-            required
             type="tel"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
@@ -207,6 +223,9 @@ export default function SignupForm({ providers, next }: { providers: Providers; 
             autoComplete="tel"
             className="input"
           />
+          <span className="text-xs font-normal text-gh-black/50 dark:text-white/40">
+            Needed later for contributor payouts — you can verify it from your account.
+          </span>
         </label>
         <div className="grid gap-1.5 text-sm font-medium">
           <label htmlFor="new-password">Password</label>

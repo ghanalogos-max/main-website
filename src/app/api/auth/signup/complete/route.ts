@@ -4,25 +4,29 @@ import { accountSummary, createAccount, startSession } from "@/lib/developer";
 import { confirmVerification } from "@/lib/verification";
 import { fail, unavailable } from "../../respond";
 
-// Step 2 of email sign-up: confirm both codes, create the account, sign in.
+// Step 2 of email sign-up: confirm the email code (and SMS if enabled), create the account, sign in.
 export async function POST(req: NextRequest) {
   const down = unavailable();
   if (down) return down;
 
   try {
-    const { token, emailCode, phoneCode } = await req.json().catch(() => ({}));
-    if (typeof token !== "string" || typeof emailCode !== "string" || typeof phoneCode !== "string") {
-      throw new AuthError("Enter both codes.");
+    const body = await req.json().catch(() => ({}));
+    const { token, emailCode, phoneCode } = body;
+    if (typeof token !== "string" || typeof emailCode !== "string") {
+      throw new AuthError("Enter the email code.");
     }
     const payload = await confirmVerification<SignupPayload>(token, {
       email: emailCode,
-      phone: phoneCode,
+      ...(typeof phoneCode === "string" ? { phone: phoneCode } : {}),
     });
     const now = Date.now();
     const account = await createAccount({
-      ...payload,
+      name: payload.name,
+      email: payload.email,
+      ...(payload.phone ? { phone: payload.phone } : {}),
+      passwordHash: payload.passwordHash,
       emailVerifiedAt: now,
-      phoneVerifiedAt: now,
+      ...(payload.phoneVerified ? { phoneVerifiedAt: now } : {}),
     });
     startSession(account);
     return NextResponse.json(await accountSummary(account));

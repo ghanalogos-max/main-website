@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { AuthError, EMAIL, clientIp, createResetToken, siteOrigin } from "@/lib/auth";
 import { accountForEmail } from "@/lib/developer";
-import { emailEnabled, notifyDevMode, sendEmail } from "@/lib/notify";
+import { emailDevMode, emailVerificationAvailable, sendEmail } from "@/lib/notify";
 import { kv } from "@/lib/store";
 import { emailLayout } from "@/lib/verification";
 import { fail, unavailable } from "../respond";
@@ -10,7 +10,7 @@ import { fail, unavailable } from "../respond";
 export async function POST(req: NextRequest) {
   const down = unavailable();
   if (down) return down;
-  if (!emailEnabled && !notifyDevMode) {
+  if (!emailVerificationAvailable) {
     return NextResponse.json(
       { error: "Password reset isn't available yet. Sign in with your receipt number instead." },
       { status: 503 }
@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
   <p style="color:#555">This link is valid for 1 hour. If you didn't ask for this, you can ignore this email — your password won't change.</p>`
         ),
       });
-      if (notifyDevMode) devLink = link;
+      if (emailDevMode) devLink = link;
     }
     return NextResponse.json({ ok: true, devLink });
   } catch (err) {
